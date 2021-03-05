@@ -48,11 +48,11 @@ export const theme = createMuiTheme({
       contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#030313'
+      main: '#111111'
     },
     text: {
-      primary: '#FFFFFF',
-      secondary: '#030313'
+      primary: '#FFFFFF'
+      // secondary: '#111111'
     },
     error: {
       main: '#E15757'

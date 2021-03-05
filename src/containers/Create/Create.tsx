@@ -73,12 +73,11 @@ export const Create: React.FC = () => {
 
       default:
         return (
-          <SelectCreateAccount
-            onFromSeed={() => {
-              setStep(CreateSteps.ImportSeed)
-            }}
-            onNew={() => {
-              setStep(CreateSteps.CreateNew)
+          <CreatePassword
+            password={password}
+            setPassword={setPassword}
+            onClick={() => {
+              setStep(CreateSteps.Select)
             }}
           />
         )

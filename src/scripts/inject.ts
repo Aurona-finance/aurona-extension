@@ -21,7 +21,6 @@ window.addEventListener(
       event.data.type !== ACTION_TYPE.REQUEST_RESOLVED &&
       event.data.type !== ACTION_TYPE.ENABLE_DONE
     ) {
-      console.log(event.data)
       chrome.runtime.sendMessage({
         ...event.data
       })

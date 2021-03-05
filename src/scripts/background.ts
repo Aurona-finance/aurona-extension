@@ -21,8 +21,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     })
 
     chrome.windows.create({
-      type: 'extension-solana',
       url: 'popup.html',
+      type:'popup',
       height: 600,
       width: 400,
       focused: true,

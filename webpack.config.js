@@ -88,7 +88,7 @@ const config = {
   plugins: [
     // Does not work when injecting
     // Uncaught Error: This script should only be loaded in a browser extension
-    new ExtensionReloader(),
+    // new ExtensionReloader(),
     new NodePolyfillPlugin(),
     // new webpack.ProvidePlugin({
     //   process: 'process/browser'
