@@ -1,6 +1,9 @@
 import crypto from 'crypto'
 import { Account } from '@solana/web3.js'
 
+export const sleep = (ms: number) => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 export const getDataExtensionStorage = (key: string) => {
   return new Promise(function (resolve, reject) {
     chrome.storage.local.get(key, function (items) {

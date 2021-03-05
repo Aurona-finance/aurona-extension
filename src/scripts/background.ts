@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       url: 'popup.html',
       type: 'popup',
       height: 600,
-      width: 400,
+      width: 360,
       focused: true,
       left: 1000
     })

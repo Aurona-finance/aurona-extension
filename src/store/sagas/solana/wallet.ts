@@ -20,6 +20,7 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 import { address } from '@selectors/solanaWallet'
 // import { createToken } from './token'
+import { BN } from '@project-serum/anchor'
 
 export function* getWallet(): SagaGenerator<Account> {
   const wallet = yield* call(getSolanaWallet)
@@ -140,7 +141,7 @@ export function* getToken(tokenAddress: string): SagaGenerator<Token> {
 export function* handleAirdrop(): Generator {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
-  yield* call([connection, connection.requestAirdrop], wallet.publicKey, 6.9 * 1e9)
+  yield* call([connection, connection.requestAirdrop], wallet.publicKey, 3.33 * 1e9)
   yield put(
     snackbarsActions.add({
       message: 'You will soon receive airdrop',
@@ -196,7 +197,7 @@ export function* init(): Generator {
   // const store = yield* select(address)
   // console.log(store)
   yield* put(actions.setAddress(wallet.publicKey.toString()))
-  yield* put(actions.setBalance(balance))
+  yield* put(actions.setBalance(new BN(balance)))
   yield* put(actions.setStatus(Status.Initalized))
 }
 

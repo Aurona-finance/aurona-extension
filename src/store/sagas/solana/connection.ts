@@ -9,6 +9,7 @@ import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { handleAirdrop, init } from './wallet'
+import { sleep } from '@static/utils'
 
 export function* getConnection(): SagaGenerator<Connection> {
   const currentNetwork = yield* select(network)
@@ -21,8 +22,7 @@ export function* initConnection(): Generator {
   try {
     yield* call(getConnection)
     yield* call(init)
-    yield* call(handleAirdrop)
-    yield put(actions.setStatus(Status.Initalized))
+    yield* put(actions.setStatus(Status.Initalized))
     yield put(
       snackbarsActions.add({
         message: 'Solana network connected.',
@@ -30,6 +30,8 @@ export function* initConnection(): Generator {
         persist: false
       })
     )
+    yield* call(sleep, 2000)
+    yield* call(handleAirdrop)
   } catch (error) {
     yield put(actions.setStatus(Status.Error))
     yield put(

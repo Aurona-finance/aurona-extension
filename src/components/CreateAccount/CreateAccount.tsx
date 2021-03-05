@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CommonButton from '@components/CommonButton/CommonButton'
-import { Grid, TextField } from '@material-ui/core'
-import { generateMnemonicAndSeed, mnemonicToSeed, getAccountFromSeed } from '@static/seedOperations'
+import { Grid, TextField, Typography } from '@material-ui/core'
+import { generateMnemonicAndSeed, getAccountFromSeed } from '@static/seedOperations'
 import { Account } from '@solana/web3.js'
 import useStyles from './style'
 
@@ -23,6 +23,9 @@ export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
   return (
     <Grid container direction='column' alignItems='center' justify='center'>
       <Grid item>
+        <Typography variant='h3'>Save seed</Typography>
+      </Grid>
+      <Grid item style={{ marginTop: 30 }}>
         <TextField
           id='standard-adornment-password'
           type='text'
@@ -35,7 +38,7 @@ export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
           value={seed.mnemonic}
         />
       </Grid>
-      <Grid item>
+      <Grid item style={{ marginTop: 30 }}>
         <CommonButton
           name='confirm'
           onClick={() => {

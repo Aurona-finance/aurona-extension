@@ -23,7 +23,7 @@ export const CommonButton: React.FC<IProps> = ({
   return (
     <Button
       className={classNames(className, classes.button)}
-      // color={color}
+      color={color}
       variant='outlined'
       classes={{ disabled: classes.disabled }}
       disabled={disabled}

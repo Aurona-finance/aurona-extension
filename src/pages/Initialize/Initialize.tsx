@@ -28,6 +28,7 @@ export const Initialize: React.FC = () => {
           setStep(Steps.Creation)
         } else {
           const a = await getHotAccount()
+          dispatch(actions.setAddress(a.publicKey.toString()))
           dispatch(actions.setStatus(Status.Initalized))
         }
       } catch (error) {

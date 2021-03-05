@@ -18,7 +18,7 @@ export const SelectCreateAccount: React.FC<IProps> = ({ onFromSeed, onNew }) => 
           }}
         />
       </Grid>
-      <Grid item>
+      <Grid item style={{ marginTop: 30 }}>
         <CommonButton
           name='New Account'
           onClick={() => {

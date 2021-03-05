@@ -6,6 +6,7 @@ import { ACTION_TYPE } from '@static/index'
 import { address } from '@selectors/solanaWallet'
 import { IData } from '../Root/Root'
 import CommonButton from '@components/CommonButton/CommonButton'
+import { getSolanaWallet } from '@web3/solana/wallet'
 
 interface IEnable {
   data: IData
@@ -27,39 +28,45 @@ export const Enable: React.FC<IEnable> = ({ data }) => {
   //   }
   // }, [dispatch, userAddress])
   return (
-    <Grid container className={classes.root}>
+    <Grid
+      container
+      className={classes.root}
+      justify='center'
+      alignItems='center'
+      direction='column'>
       <Grid item>
         <Typography variant='h3'> Enable Extension</Typography>
       </Grid>
-      <Grid item>
-        <CommonButton
-          name='Confirm'
-          onClick={async () => {
-            if (data.type === ACTION_TYPE.ENABLE && !!userAddress) {
-              chrome.runtime.sendMessage({
-                ...data,
-                data: 'enabled',
-                userAddress: userAddress,
-                type: ACTION_TYPE.ENABLE_DONE
-              })
-              window.close()
-            }
-          }}></CommonButton>
-      </Grid>
-      <Grid item>
-        <CommonButton
-          name='Reject'
-          onClick={async () => {
-            if (data.type === ACTION_TYPE.ENABLE && !!userAddress) {
-              chrome.runtime.sendMessage({
-                ...data,
-                data: null,
-                userAddress: userAddress,
-                type: ACTION_TYPE.ENABLE_DONE
-              })
-              window.close()
-            }
-          }}></CommonButton>
+      <Grid item style={{ marginTop: 20, height: 200 }}>
+        <Grid container>
+          <Grid item>
+            <CommonButton
+              name='Confirm'
+              onClick={async () => {
+                const wallet = await getSolanaWallet()
+                chrome.runtime.sendMessage({
+                  ...data,
+                  data: 'enabled',
+                  userAddress: wallet.publicKey.toString(),
+                  type: ACTION_TYPE.ENABLE_DONE
+                })
+                window.close()
+              }}></CommonButton>
+          </Grid>
+          <Grid item style={{ marginLeft: 20 }}>
+            <CommonButton
+              name='Reject'
+              onClick={async () => {
+                chrome.runtime.sendMessage({
+                  ...data,
+                  data: null,
+                  userAddress: userAddress,
+                  type: ACTION_TYPE.ENABLE_DONE
+                })
+                window.close()
+              }}></CommonButton>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   )

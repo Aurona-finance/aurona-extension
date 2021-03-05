@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PayloadType } from './types'
+import { BN } from '@project-serum/anchor'
+
 export enum Status {
   Uninitialized = 'uninitialized',
   Init = 'init',
@@ -30,7 +32,7 @@ export interface ITransaction {
 export interface ISolanaWallet {
   status: Status
   address: string
-  balance: number
+  balance: BN
   transactions: { [key in string]: ITransaction }
   accounts: { [key in string]: ITokenAccount[] }
 }
@@ -38,7 +40,7 @@ export interface ISolanaWallet {
 export const defaultState: ISolanaWallet = {
   status: Status.Uninitialized,
   address: '',
-  balance: 0,
+  balance: new BN(0),
   transactions: {},
   accounts: {}
 }
@@ -61,7 +63,7 @@ const solanaWalletSlice = createSlice({
       state.status = action.payload
       return state
     },
-    setBalance(state, action: PayloadAction<number>) {
+    setBalance(state, action: PayloadAction<BN>) {
       state.balance = action.payload
       return state
     },
@@ -75,12 +77,12 @@ const solanaWalletSlice = createSlice({
       }
       return state
     },
-    setTransactionTxid(state, action: PayloadAction<{ txid: string, id: string }>) {
+    setTransactionTxid(state, action: PayloadAction<{ txid: string; id: string }>) {
       state.transactions[action.payload.id].txid = action.payload.txid
       state.transactions[action.payload.id].sending = false
       return state
     },
-    setTransactionError(state, action: PayloadAction<{ error: string, id: string }>) {
+    setTransactionError(state, action: PayloadAction<{ error: string; id: string }>) {
       state.transactions[action.payload.id].error = action.payload.error
       state.transactions[action.payload.id].sending = false
       return state

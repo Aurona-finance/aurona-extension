@@ -5,13 +5,12 @@ import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
 import { Grid } from '@material-ui/core'
 import { ACTION_TYPE } from '@static/index'
 import { status } from '@selectors/solanaWallet'
-import { getSolanaWallet } from '@web3/solana/wallet'
-import { Transaction } from '@solana/web3.js'
 import Main from '@pages/Main/Main'
 import Enable from '@pages/Enable/Enable'
 import Initialize from '@pages/Initialize/Initialize'
 import Confirm from '@pages/Confirm/Confirm'
 import { Status } from '@reducers/solanaWallet'
+import EventsHandlers from '@containers/EventsHandlers'
 export interface IData {
   type: ACTION_TYPE
   id: string
@@ -25,11 +24,11 @@ export const Root: React.FC = () => {
   console.log(initialized)
   // Handle open request
   // const userAddress = useSelector(address)
-  React.useEffect(() => {
-    if (data !== undefined && initialized === Status.Initalized) {
-      dispatch(solanaConnectionActions.initSolanaConnection())
-    }
-  }, [dispatch, initialized, data])
+  // React.useEffect(() => {
+  //   if (data !== undefined && initialized === Status.Initalized) {
+  //     dispatch(solanaConnectionActions.initSolanaConnection())
+  //   }
+  // }, [dispatch, initialized, data])
   React.useEffect(() => {
     chrome.storage.local.get('key', function (d) {
       const _data = d.key
@@ -48,11 +47,16 @@ export const Root: React.FC = () => {
       case ACTION_TYPE.REQUEST_NEW:
         return <Confirm data={data} />
       default:
-        return <Main />
+        return (
+          <>
+            <Main />
+            <EventsHandlers />
+          </>
+        )
     }
   }
   return (
-    <Grid container style={{ width: 400, height: 600 }}>
+    <Grid container style={{ width: 360, height: 600 }}>
       {initialized === Status.Uninitialized && <Initialize />}
       {data !== undefined && initialized === Status.Initalized && dataToComponent(data)}
     </Grid>

@@ -68,6 +68,9 @@ const config = {
     //   crypto: require.resolve('crypto-browserify'),
     //   stream: require.resolve('stream-browserify')
     // },
+    fallback: {
+      fs: false
+    },
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
       'react-dom': '@hot-loader/react-dom',

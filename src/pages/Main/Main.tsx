@@ -13,16 +13,21 @@ export const Main: React.FC = () => {
   const dispatch = useDispatch()
   const userAddress = useSelector(address)
   const userBalance = useSelector(balance)
-  // React.useEffect(() => {
-  //   dispatch(solanaConnectionActions.initSolanaConnection())
-  // }, [dispatch])
+  React.useEffect(() => {
+    dispatch(solanaConnectionActions.initSolanaConnection())
+  }, [dispatch])
   return (
     <Grid container direction='column' justify='center'>
       <Grid item>
-        <Typography variant='body1' color='primary'>{`Your address ${userAddress}`}</Typography>
+        <Typography variant='body1'>{'Your address'}</Typography>
       </Grid>
       <Grid item>
-        <Typography variant='body1'>{`Your SOL balance ${userBalance / 1e9}`}</Typography>
+        <Typography variant='body1' color='primary'>{`${userAddress}`}</Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant='body1'>{`Your SOL balance ${
+          userBalance.toNumber() / 1e9
+        }`}</Typography>
       </Grid>
     </Grid>
   )

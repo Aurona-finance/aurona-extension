@@ -5,11 +5,8 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import FormControl from '@material-ui/core/FormControl'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
-import Input from '@material-ui/core/Input'
 import IconButton from '@material-ui/core/IconButton'
 import CommonButton from '@components/CommonButton/CommonButton'
-import { Account } from '@solana/web3.js'
-import { getDataExtensionStorage, storeAccount } from '@static/utils'
 import { actions, Status } from '@reducers/solanaWallet'
 import { useDispatch } from 'react-redux'
 import { getColdAccount } from '@web3/solana/wallet'
@@ -50,7 +47,7 @@ export const Unlock: React.FC = () => {
           />
         </FormControl>
       </Grid>
-      <Grid item>
+      <Grid item style={{ marginTop: 30 }}>
         <CommonButton
           name='Unlock'
           onClick={async () => {

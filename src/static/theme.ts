@@ -47,13 +47,13 @@ export const theme = createMuiTheme({
       main: '#00F9BB',
       contrastText: '#FFFFFF'
     },
-    secondary: {
-      main: '#111111'
-    },
-    text: {
-      primary: '#FFFFFF'
-      // secondary: '#111111'
-    },
+    // secondary: {
+    //   main: '#111111'
+    // },
+    // text: {
+    //   primary: '#FFFFFF'
+    //   // secondary: '#111111'
+    // },
     error: {
       main: '#E15757'
     }
