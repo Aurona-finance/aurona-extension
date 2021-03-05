@@ -52,10 +52,10 @@ export const Root: React.FC = () => {
     }
   }
   return (
-    <div style={{ width: 400, height: 600 }}>
+    <Grid container style={{ width: 400, height: 600 }}>
       {initialized === Status.Uninitialized && <Initialize />}
       {data !== undefined && initialized === Status.Initalized && dataToComponent(data)}
-    </div>
+    </Grid>
   )
 }
 export default Root
