@@ -9,14 +9,14 @@ import Provider from './provider'
 // console.log(chrome)
 
 console.log('Begin injecting')
-var eventsMap = new Map<string, { resolve: any }>()
+var eventsMap = new Map<string, { resolve: any; reject: any }>()
 export class ExtensionWallet implements Wallet {
   constructor(readonly payer: PublicKey) {}
 
   async signTransaction(tx: Transaction): Promise<Transaction> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const id = Math.random().toString()
-      eventsMap.set(id, { resolve: resolve })
+      eventsMap.set(id, { resolve: resolve, reject })
       window.postMessage(
         {
           type: ACTION_TYPE.REQUEST_NEW,
@@ -33,9 +33,9 @@ export class ExtensionWallet implements Wallet {
   }
 
   async signAllTransactions(txs: Transaction[]): Promise<Transaction[]> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const id = Math.random().toString()
-      eventsMap.set(id, { resolve: resolve })
+      eventsMap.set(id, { resolve: resolve, reject })
       window.postMessage(
         {
           type: ACTION_TYPE.REQUEST_NEW,
@@ -72,6 +72,12 @@ window.addEventListener(
       const req = eventsMap.get(e.data.id)
       if (req) {
         const tx = JSON.parse(e.data.data)
+        // null means rejected
+        if (tx === null) {
+          console.log('rejected')
+          req.reject()
+          return
+        }
         if (Array.isArray(tx)) {
           const txs = tx.map((tx: any) => {
             return Transaction.from(tx.data)
@@ -87,6 +93,11 @@ window.addEventListener(
     if (e.data.type === ACTION_TYPE.ENABLE_DONE) {
       const req = eventsMap.get(e.data.id)
       if (req) {
+        if (e.data.data === null) {
+          console.log('rejected')
+          req.reject()
+          return
+        }
         req.resolve()
         eventsMap.delete(e.data.id)
       }

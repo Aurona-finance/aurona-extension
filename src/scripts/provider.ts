@@ -17,7 +17,7 @@ export default class Provider {
   constructor(
     readonly connection: Connection,
     readonly opts: ConfirmOptions,
-    readonly eventsMap: Map<string, { resolve: any }>,
+    readonly eventsMap: Map<string, { resolve: any; reject: any }>,
     public wallet?: Wallet
   ) {}
 
@@ -30,9 +30,9 @@ export default class Provider {
 
   public async enable(): Promise<any> {
     console.log('ENABLE')
-    return await new Promise(resolve => {
+    return await new Promise((resolve, reject) => {
       const id = Math.random().toString()
-      this.eventsMap.set(id, { resolve: resolve })
+      this.eventsMap.set(id, { resolve: resolve, reject })
       window.postMessage(
         { type: ACTION_TYPE.ENABLE, id, data: { host: window.location.host } },
         '*'

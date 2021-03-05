@@ -52,6 +52,19 @@ export const Confirm: React.FC<IEnable> = ({ data }) => {
             }
           }}></CommonButton>
       </Grid>
+      <Grid item>
+        <CommonButton
+          name='reject'
+          onClick={async () => {
+            chrome.runtime.sendMessage({
+              ...data,
+              data: null,
+              type: ACTION_TYPE.REQUEST_RESOLVED
+            })
+            window.close()
+          }}
+        />
+      </Grid>
     </Grid>
   )
 }

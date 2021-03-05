@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     chrome.windows.create({
       url: 'popup.html',
-      type:'popup',
+      type: 'popup',
       height: 600,
       width: 400,
       focused: true,
@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.type === ACTION_TYPE.REQUEST_RESOLVED || request.type === ACTION_TYPE.ENABLE_DONE) {
     const req = requestMap.get(request.id)
     if (req) {
-      chrome.tabs.sendMessage(req.tabId, { greeting: 'clicked on extension', ...request })
+      chrome.tabs.sendMessage(req.tabId, { ...request })
       requestMap.delete(request.id)
     }
   }

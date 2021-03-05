@@ -38,6 +38,22 @@ export const Enable: React.FC<IEnable> = ({ data }) => {
             if (data.type === ACTION_TYPE.ENABLE && !!userAddress) {
               chrome.runtime.sendMessage({
                 ...data,
+                data: 'enabled',
+                userAddress: userAddress,
+                type: ACTION_TYPE.ENABLE_DONE
+              })
+              window.close()
+            }
+          }}></CommonButton>
+      </Grid>
+      <Grid item>
+        <CommonButton
+          name='Reject'
+          onClick={async () => {
+            if (data.type === ACTION_TYPE.ENABLE && !!userAddress) {
+              chrome.runtime.sendMessage({
+                ...data,
+                data: null,
                 userAddress: userAddress,
                 type: ACTION_TYPE.ENABLE_DONE
               })
