@@ -1,0 +1,48 @@
+{
+  "name": "Snow Extension",
+  "description": "Chrome Extension for making it snow in your browser!",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "manifest_version": 2,
+  "version": "1.0.0",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "64": "icon64.png",
+    "128": "icon128.png"
+  },
+  "browser_action": {
+    "default_icon": "icon128.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "inject.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "webRequest",
+    "notifications",
+    "webRequest",
+    "clipboardWrite",
+    "tabs",
+    "*://developer.mozilla.org/"
+  ],
+  "web_accessible_resources": [
+    "content.js"
+  ]
+}
