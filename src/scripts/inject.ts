@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { ACTION_TYPE } from '../static/index'
 // Gets events from webpage
-console.log(chrome.runtime.id)
+// console.log(chrome.runtime.id)
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.type === ACTION_TYPE.REQUEST_RESOLVED || request.type === ACTION_TYPE.ENABLE_DONE) {
+  if (
+    request.type === ACTION_TYPE.REQUEST_RESOLVED ||
+    request.type === ACTION_TYPE.ENABLE_DONE ||
+    request.type === ACTION_TYPE.NETWORK_CHANGE
+  ) {
     window.postMessage(request, '*')
   }
 })
@@ -19,7 +23,8 @@ window.addEventListener(
       // @ts-expect-error
       ACTION_TYPE[event.data.type] &&
       event.data.type !== ACTION_TYPE.REQUEST_RESOLVED &&
-      event.data.type !== ACTION_TYPE.ENABLE_DONE
+      event.data.type !== ACTION_TYPE.ENABLE_DONE &&
+      event.data.type !== ACTION_TYPE.NETWORK_CHANGE
     ) {
       chrome.runtime.sendMessage({
         ...event.data

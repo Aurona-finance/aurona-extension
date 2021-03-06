@@ -7,6 +7,7 @@ import { ACTION_TYPE } from '@static/index'
 import { address, balance } from '@selectors/solanaWallet'
 import { getSolanaWallet } from '@web3/solana/wallet'
 import { Transaction } from '@solana/web3.js'
+import Header from '@containers/Header/Header'
 
 export const Main: React.FC = () => {
   const classes = useStyles()
@@ -18,6 +19,7 @@ export const Main: React.FC = () => {
   }, [dispatch])
   return (
     <Grid container direction='column' justify='center'>
+      <Header />
       <Grid item>
         <Typography variant='body1'>{'Your address'}</Typography>
       </Grid>

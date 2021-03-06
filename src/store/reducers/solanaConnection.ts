@@ -38,6 +38,10 @@ const solanaConnectionSlice = createSlice({
     setNetwork(state, action: PayloadAction<SolanaNetworks>) {
       state.network = action.payload
       return state
+    },
+    changeNetwork(state, action: PayloadAction<SolanaNetworks>) {
+      state.network = action.payload
+      return state
     }
   }
 })

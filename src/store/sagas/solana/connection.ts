@@ -9,18 +9,20 @@ import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { handleAirdrop, init } from './wallet'
-import { sleep } from '@static/utils'
+import { setDataExtensionStorage, sleep } from '@static/utils'
+import { ACTION_TYPE, SolanaNetworks } from '@static/index'
 
 export function* getConnection(): SagaGenerator<Connection> {
-  const currentNetwork = yield* select(network)
-  const connection = yield* call(getSolanaConnection, currentNetwork)
+  const connection = yield* call(getSolanaConnection)
   return connection
 }
 
 export function* initConnection(): Generator {
   console.log('init connection')
   try {
-    yield* call(getConnection)
+    const connection = yield* call(getConnection)
+    // @ts-expect-error
+    yield* put(actions.setNetwork(connection._rpcEndpoint as SolanaNetworks))
     yield* call(init)
     yield* put(actions.setStatus(Status.Initalized))
     yield put(
@@ -44,14 +46,19 @@ export function* initConnection(): Generator {
   }
 }
 
-export function* handleNetworkChange(action: PayloadAction<PayloadTypes['setNetwork']>): Generator {
+export function* handleNetworkChange(action: PayloadAction<PayloadTypes['changeNetwork']>): Generator {
   yield* put(
     uiActions.setLoader({
       open: true,
       message: `Loading ${networkToName(action.payload)} wallet.`
     })
   )
-  yield* put(solanaWalletActions.resetState())
+  // yield* put(solanaWalletActions.resetState())
+  yield* call(setDataExtensionStorage, 'network', action.payload)
+  chrome.runtime.sendMessage({
+    data: action.payload,
+    type: ACTION_TYPE.NETWORK_CHANGE
+  })
   yield* call(init)
   yield* put(
     uiActions.setLoader({
@@ -69,7 +76,7 @@ export function* handleNetworkChange(action: PayloadAction<PayloadTypes['setNetw
 }
 
 export function* networkChangeSaga(): Generator {
-  yield takeLeading(actions.setNetwork, handleNetworkChange)
+  yield takeLeading(actions.changeNetwork, handleNetworkChange)
 }
 export function* initConnectionSaga(): Generator {
   yield takeLeading(actions.initSolanaConnection, initConnection)

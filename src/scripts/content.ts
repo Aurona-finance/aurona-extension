@@ -6,7 +6,6 @@ import { ACTION_TYPE } from '../static/index'
 /* eslint-disable @typescript-eslint/promise-function-async */
 import { Connection, PublicKey, Transaction } from '@solana/web3.js'
 import Provider from './provider'
-// console.log(chrome)
 
 console.log('Begin injecting')
 var eventsMap = new Map<string, { resolve: any; reject: any }>()
@@ -68,13 +67,11 @@ window.addEventListener(
   'message',
   e => {
     if (e.data.type === ACTION_TYPE.REQUEST_RESOLVED) {
-      // console.log(e.data)
       const req = eventsMap.get(e.data.id)
       if (req) {
         const tx = JSON.parse(e.data.data)
         // null means rejected
         if (tx === null) {
-          console.log('rejected')
           req.reject()
           return
         }
@@ -86,7 +83,6 @@ window.addEventListener(
         } else {
           req.resolve(Transaction.from(tx.data))
         }
-        // console.log(Transaction.from(btx.data))
         eventsMap.delete(e.data.id)
       }
     }
@@ -94,14 +90,26 @@ window.addEventListener(
       const req = eventsMap.get(e.data.id)
       if (req) {
         if (e.data.data === null) {
-          console.log('rejected')
           req.reject()
           return
         }
+        // Check is extension is on same network
+        // @ts-expect-error
+        if (e.data.network !== window.solanaProvider.connection._rpcEndpoint) {
+          window.solanaProvider.connection = new Connection(e.data.network)
+          window.solanaProvider.triggerNetworkChange?.(e.data.network)
+        }
+        window.solanaProvider.connectWallet(new ExtensionWallet(new PublicKey(e.data.userAddress)))
         req.resolve()
         eventsMap.delete(e.data.id)
       }
-      window.solanaProvider.connectWallet(new ExtensionWallet(new PublicKey(e.data.userAddress)))
+    }
+
+    if (e.data.type === ACTION_TYPE.NETWORK_CHANGE) {
+      if (window.solanaProvider.triggerNetworkChange) {
+        window.solanaProvider.connection = new Connection(e.data.data)
+        window.solanaProvider.triggerNetworkChange(e.data.data)
+      }
     }
     // window.postMessage(e.data, '*')
   },

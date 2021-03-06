@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
 import { ACTION_TYPE } from '../static/index'
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -14,11 +15,12 @@ import {
 } from '@solana/web3.js'
 
 export default class Provider {
+  public wallet?: Wallet
+  public triggerNetworkChange?: (network: string) => void | undefined
   constructor(
-    readonly connection: Connection,
+    public connection: Connection,
     readonly opts: ConfirmOptions,
-    readonly eventsMap: Map<string, { resolve: any; reject: any }>,
-    public wallet?: Wallet
+    readonly eventsMap: Map<string, { resolve: any; reject: any }>
   ) {}
 
   static defaultOptions(): ConfirmOptions {
@@ -42,6 +44,10 @@ export default class Provider {
 
   public connectWallet(wallet: Wallet) {
     this.wallet = wallet
+  }
+
+  public onNetworkChange(callback: (network: string) => void) {
+    this.triggerNetworkChange = callback
   }
 
   async send(

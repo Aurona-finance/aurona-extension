@@ -1,4 +1,5 @@
 import { Connection } from '@solana/web3.js'
+import { getDataExtensionStorage, setDataExtensionStorage } from '@static/utils'
 
 enum SolanaNetworks {
   DEV = 'https://devnet.solana.com',
@@ -23,7 +24,12 @@ export const networkToName = (network: SolanaNetworks) => {
 let _connection: Connection | null = null
 let _network: SolanaNetworks
 
-const getSolanaConnection = async (url: SolanaNetworks): Promise<Connection> => {
+const getSolanaConnection = async (): Promise<Connection> => {
+  let url = (await getDataExtensionStorage('network')) as SolanaNetworks
+  if (!url) {
+    await setDataExtensionStorage('network', SolanaNetworks.DEV)
+    url = SolanaNetworks.DEV
+  }
   if (_connection && _network === url) {
     return _connection
   }

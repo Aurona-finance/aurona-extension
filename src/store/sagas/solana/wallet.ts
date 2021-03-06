@@ -191,7 +191,6 @@ export function* createAccount(tokenAddress: string): SagaGenerator<string> {
 
 export function* init(): Generator {
   const wallet = yield* call(getWallet)
-  console.log(wallet)
   const balance = yield* call(getBalance, wallet.publicKey)
   // yield* call(fetchTokensAccounts)
   // const store = yield* select(address)

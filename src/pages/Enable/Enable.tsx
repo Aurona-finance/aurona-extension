@@ -2,11 +2,12 @@ import React from 'react'
 import useStyles from './style'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Typography } from '@material-ui/core'
-import { ACTION_TYPE } from '@static/index'
+import { ACTION_TYPE, SolanaNetworks } from '@static/index'
 import { address } from '@selectors/solanaWallet'
 import { IData } from '../Root/Root'
 import CommonButton from '@components/CommonButton/CommonButton'
 import { getSolanaWallet } from '@web3/solana/wallet'
+import { getDataExtensionStorage } from '@static/utils'
 
 interface IEnable {
   data: IData
@@ -44,10 +45,12 @@ export const Enable: React.FC<IEnable> = ({ data }) => {
               name='Confirm'
               onClick={async () => {
                 const wallet = await getSolanaWallet()
+                const network = await getDataExtensionStorage('network')
                 chrome.runtime.sendMessage({
                   ...data,
                   data: 'enabled',
                   userAddress: wallet.publicKey.toString(),
+                  network: network || SolanaNetworks.DEV,
                   type: ACTION_TYPE.ENABLE_DONE
                 })
                 window.close()
