@@ -1,26 +1,7 @@
 import { Connection } from '@solana/web3.js'
+import { SolanaNetworks } from '@static/index'
 import { getDataExtensionStorage, setDataExtensionStorage } from '@static/utils'
 
-enum SolanaNetworks {
-  DEV = 'https://devnet.solana.com',
-  TEST = 'https://testnet.solana.com',
-  MAIN = 'https://api.mainnet-beta.solana.com'
-}
-export const networkToName = (network: SolanaNetworks) => {
-  switch (network) {
-    case SolanaNetworks.DEV:
-      return 'Devnet'
-
-    case SolanaNetworks.TEST:
-      return 'Testnet'
-
-    case SolanaNetworks.MAIN:
-      return 'Mainnet'
-
-    default:
-      return 'DEVNET'
-  }
-}
 let _connection: Connection | null = null
 let _network: SolanaNetworks
 
@@ -41,4 +22,4 @@ const getCurrentSolanaConnection = (): Connection | null => {
   return _connection
 }
 
-export { getSolanaConnection, SolanaNetworks, getCurrentSolanaConnection }
+export { getSolanaConnection, getCurrentSolanaConnection }

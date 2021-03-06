@@ -3,14 +3,14 @@ import { all, call, put, SagaGenerator, select, takeLeading, spawn } from 'typed
 import { actions, Status, PayloadTypes } from '@reducers/solanaConnection'
 import { actions as solanaWalletActions } from '@reducers/solanaWallet'
 import { actions as uiActions } from '@reducers/ui'
-import { getSolanaConnection, networkToName } from '@web3/solana/connection'
+import { getSolanaConnection } from '@web3/solana/connection'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { handleAirdrop, init } from './wallet'
 import { setDataExtensionStorage, sleep } from '@static/utils'
-import { ACTION_TYPE, SolanaNetworks } from '@static/index'
+import { ACTION_TYPE, SolanaNetworks, networkToName } from '@static/index'
 
 export function* getConnection(): SagaGenerator<Connection> {
   const connection = yield* call(getSolanaConnection)
@@ -46,7 +46,9 @@ export function* initConnection(): Generator {
   }
 }
 
-export function* handleNetworkChange(action: PayloadAction<PayloadTypes['changeNetwork']>): Generator {
+export function* handleNetworkChange(
+  action: PayloadAction<PayloadTypes['changeNetwork']>
+): Generator {
   yield* put(
     uiActions.setLoader({
       open: true,

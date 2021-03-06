@@ -16,5 +16,20 @@ enum SolanaNetworks {
   TEST = 'https://testnet.solana.com',
   MAIN = 'https://api.mainnet-beta.solana.com'
 }
+export const networkToName = (network: SolanaNetworks) => {
+  switch (network) {
+    case SolanaNetworks.DEV:
+      return 'Devnet'
+
+    case SolanaNetworks.TEST:
+      return 'Testnet'
+
+    case SolanaNetworks.MAIN:
+      return 'Mainnet'
+
+    default:
+      return 'DEVNET'
+  }
+}
 const DEFAULT_PUBLICKEY = new PublicKey(0)
 export { SolanaNetworks, DEFAULT_PUBLICKEY }

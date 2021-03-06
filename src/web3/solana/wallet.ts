@@ -1,6 +1,6 @@
 import { Account } from '@solana/web3.js'
-import { SolanaNetworks } from './connection'
 import { retrieveAccount, getDataExtensionStorage, storeAccount } from '@static/utils'
+import { SolanaNetworks } from '@static/index'
 
 let _wallet: Account
 const TokenProgramMap: { [key in SolanaNetworks]: string } = {

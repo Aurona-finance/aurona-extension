@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Button, Drawer, Grid, Typography } from '@material-ui/core'
 // import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
 import CommonButton from '@components/CommonButton/CommonButton'
-import { networkToName, SolanaNetworks } from '@web3/solana/connection'
+import { SolanaNetworks, networkToName } from '@static/index'
+
 import BlurOnIcon from '@material-ui/icons/BlurOn'
 import useStyles from './style'
 
