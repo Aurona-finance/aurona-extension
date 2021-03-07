@@ -16,7 +16,7 @@ interface ITokenAccount {
 }
 interface IProps {
   tokens?: ITokenAccount[]
-  onAddAccount: () => {}
+  onAddAccount: () => void
   onTokenClick: (address: PublicKey) => void
 }
 export const AssetsList: React.FC<IProps> = ({ tokens, onAddAccount, onTokenClick }) => {
@@ -25,8 +25,6 @@ export const AssetsList: React.FC<IProps> = ({ tokens, onAddAccount, onTokenClic
     <Grid
       container
       direction='column'
-      // alignItems='center'
-      // justify='space-between'
       className={classes.root}>
       <Grid item style={{ width: '100%' }}>
         <Grid container justify='space-between' alignItems='center'>

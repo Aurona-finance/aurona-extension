@@ -35,7 +35,7 @@ storiesOf('Pages/Main', module)
           balanceUsd={new BN(100232).toString()}
           address='BVY7sD418vuos1vEQjeHkFgnYVJYmwhqr5jDcaxRHxwx'
         />
-        <AssetsList onTokenClick={() => {}} tokens={tokens}></AssetsList>
+        <AssetsList onTokenClick={() => {}} tokens={tokens} onAddAccount={() => {}}></AssetsList>
       </>
     )
   })
