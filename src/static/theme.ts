@@ -92,6 +92,18 @@ export const theme = createMuiTheme({
     }
   },
   overrides: {
+    MuiCssBaseline: {
+      // Why does this not work ?
+      '@global': {
+        // '*': {
+        //   overflow: 'scroll',
+        //   scrollbarWidth: 0
+        // },
+        '*::-webkit-scrollbar': {
+          diplay: 'none'
+        }
+      }
+    },
     MuiInputBase: {
       input: {
         MozAppearance: 'textfield',

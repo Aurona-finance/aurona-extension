@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '10px 0px'
+    padding: '6px 0px'
   },
   usdBalance: {
     color: colors.gray['#747474']

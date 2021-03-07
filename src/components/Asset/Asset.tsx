@@ -7,7 +7,7 @@ interface IProps {
   name: string
   balance: string
   balanceUsd?: string
-  onClick: () => {}
+  onClick: () => void
   iconPath?: string
 }
 export const Asset: React.FC<IProps> = ({ balance, balanceUsd, onClick, name, iconPath }) => {

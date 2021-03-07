@@ -13,9 +13,21 @@ export const withBackground = storyFn => (
     style={{
       width: 360,
       height: 600,
-      backgroundImage: `url(${bg})`
+      backgroundImage: `url(${bg})`,
+      overflow: 'hidden',
+      position: 'relative'
     }}>
-    {storyFn()}
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: -20,
+        right: -15,
+        overflow: 'scroll'
+      }}>
+      {storyFn()}
+    </div>
   </Grid>
 )
 export default {

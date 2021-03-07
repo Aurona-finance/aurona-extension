@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '30px 40px',
-    paddingBottom: 0
+    paddingBottom: 44
   },
   usdBalance: {
     marginTop: 5,
