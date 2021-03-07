@@ -34,6 +34,9 @@ export const colors = {
     neon: '#FF2079',
     pinkish: '#FE53BB'
   },
+  pink: {
+    gradient: 'linear-gradient(90deg, #FFA1F0 0.61%, #C67DFF 98.25%)'
+  },
   purple: {
     magenta: '#A1045A',
     orchid: '#AF69EF',
