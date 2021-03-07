@@ -66,22 +66,27 @@ export const theme = createMuiTheme({
   typography: {
     fontFamily: 'Inter',
     body1: {
+      color: '#FFFFFF',
       fontSize: 12,
       lineHeight: '15px'
     },
     body2: {
+      color: '#FFFFFF',
       fontSize: 14
     },
     h1: {
+      color: '#FFFFFF',
       fontSize: 26,
       fontWeight: 'bold'
     },
     h2: {
+      color: '#FFFFFF',
       fontSize: 20,
       fontWeight: 'bold'
     },
 
     h3: {
+      color: '#FFFFFF',
       fontSize: 14,
       fontWeight: 'bold'
     }
