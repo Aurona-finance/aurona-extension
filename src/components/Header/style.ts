@@ -2,7 +2,13 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: { height: 60, padding: '0px 30px', paddingRight: 15 },
+  root: {
+    height: 60,
+    padding: '0px 30px',
+    paddingRight: 15,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: ' 0px 0px 15px 15px'
+  },
   logo: {
     height: 30,
     width: 30,
@@ -40,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '15px 15px 0px 0px',
     width: 360,
     paddingTop: 40,
-    paddingBottom: 40
+    paddingBottom: 80
   },
   drawerTitle: {
     padding: `0px 40px`,
