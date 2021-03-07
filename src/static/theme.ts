@@ -15,6 +15,8 @@ export const colors = {
     astel: '#48ADF1'
   },
   gray: {
+    backgroundOpacity: 'rgba(255, 255, 255, 0.05)',
+    '#747474': '#747474',
     base: '#8DA9C4',
     skeletonBackground: '#8E8B8B',
     skeletonField: '#C4C4C4'
@@ -44,16 +46,16 @@ export const colors = {
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#00F9BB',
+      main: '#FFFFFF',
       contrastText: '#FFFFFF'
     },
     // secondary: {
     //   main: '#111111'
     // },
-    // text: {
-    //   primary: '#FFFFFF'
-    //   // secondary: '#111111'
-    // },
+    text: {
+      primary: '#FFFFFF'
+      // secondary: '#111111'
+    },
     error: {
       main: '#E15757'
     }
@@ -61,29 +63,20 @@ export const theme = createMuiTheme({
   typography: {
     fontFamily: 'Inter',
     body1: {
-      fontSize: 22,
-      lineHeight: '40px'
+      fontSize: 12,
+      lineHeight: '15px'
     },
     body2: {
-      fontSize: 16
+      fontSize: 14
     },
     h1: {
-      fontSize: 56
+      fontSize: 26,
+      fontWeight: 'bold'
     },
-    h2: {
-      fontSize: 40
-    },
+
     h3: {
-      fontSize: 32
-    },
-    h4: {
-      fontSize: 24
-    },
-    h5: {
-      fontSize: 16
-    },
-    h6: {
-      fontSize: 12
+      fontSize: 14,
+      fontWeight: 'bold'
     }
   },
   overrides: {

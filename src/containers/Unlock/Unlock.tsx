@@ -11,6 +11,7 @@ import { actions, Status } from '@reducers/solanaWallet'
 import { useDispatch } from 'react-redux'
 import { getColdAccount } from '@web3/solana/wallet'
 import { Grid, OutlinedInput } from '@material-ui/core'
+import FilledButton from '@components/FilledButton/FilledButton'
 export const Unlock: React.FC = () => {
   const classes = useStyles()
   const [show, setShow] = useState(false)
@@ -49,6 +50,16 @@ export const Unlock: React.FC = () => {
       </Grid>
       <Grid item style={{ marginTop: 30 }}>
         <CommonButton
+          name='Unlock'
+          onClick={async () => {
+            const acc = await getColdAccount(password)
+            dispatch(actions.setStatus(Status.Initalized))
+          }}
+        />
+      </Grid>
+      <Grid item style={{ marginTop: 30 }}>
+        <FilledButton
+          disabled
           name='Unlock'
           onClick={async () => {
             const acc = await getColdAccount(password)

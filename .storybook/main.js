@@ -10,14 +10,15 @@ module.exports = {
     // '@storybook/addon-actions/register',
     // '@storybook/addon-knobs/register',
     // '@storybook/addon-viewport/register',
-    // '@storybook/addon-storysource'
+    // '@storybook/addon-storysource',
+    '@storybook/addon-storysource',
+    'storybook-dark-mode'
   ],
 
   core: {
     builder: 'webpack5'
   },
   webpackFinal: config => {
-    console.log(config.resolve.alias)
     Object.assign(config.resolve.alias, {
       '@static': resolve('src/static'),
       '@components': resolve('src/components'),
@@ -29,7 +30,6 @@ module.exports = {
       '@sagas': resolve('src/store/sagas'),
       '@consts': resolve('src/store/consts')
     })
-    console.log(config.resolve.alias)
 
     // config.node = {
     //   fs: 'empty',
