@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import useStyles from './style'
-import CommonButton from '@components/CommonButton/CommonButton'
-import { Grid, InputLabel, Typography, OutlinedInput, FormControl } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { mnemonicToSeed } from '@static/seedOperations'
+import MultilineText from '@components/MultilineText/MultilineText'
+import FilledButton from '@components/FilledButton/FilledButton'
 interface IProps {
   onClick: (seed: string) => void
 }
@@ -10,38 +11,36 @@ export const ImportSeed: React.FC<IProps> = ({ onClick }) => {
   const classes = useStyles()
   const [seed, setSeed] = useState('')
   return (
-    <Grid container direction='column' alignItems='center' justify='center'>
-      <Grid item>
-        <Typography variant='h3'>Enter seed</Typography>
+    <Grid
+      container
+      direction='column'
+      alignItems='center'
+      justify='center'
+      className={classes.root}>
+      <Grid item style={{ marginTop: 100 }}>
+        <Typography variant='body2' className={classes.welcome}>
+          Welcome
+        </Typography>
+      </Grid>
+      <Grid item style={{ marginTop: 15 }}>
+        <Typography variant='h1' className={classes.title}>
+          Enter seed
+        </Typography>
       </Grid>
       <Grid item style={{ marginTop: 30 }}>
-        <FormControl variant='outlined'>
-          <InputLabel htmlFor='outlined-adornment-password' className={classes.label}>
-            Your seed
-          </InputLabel>
-          <OutlinedInput
-            className={classes.input}
-            color='primary'
-            id='outlined-adornment-password'
-            type='text'
-            multiline
-            rows={4}
-            value={seed}
-            onChange={e => {
-              setSeed(e.target.value)
-            }}
-            labelWidth={85}
-          />
-        </FormControl>
+        <MultilineText onChange={setSeed} text={seed} label='Your seed*'></MultilineText>
       </Grid>
-      <Grid item style={{ marginTop: 30 }}>
-        <CommonButton
-          name='confirm'
+      <Grid item style={{ marginTop: 42 }}>
+        <FilledButton
+          name='Import  account'
           onClick={() => {
             try {
+              // eslint-disable-next-line @typescript-eslint/no-floating-promises
               mnemonicToSeed(seed)
               onClick(seed)
-            } catch (error) {}
+            } catch (error) {
+              console.log('invalid seed')
+            }
           }}
         />
       </Grid>

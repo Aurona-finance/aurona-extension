@@ -1,4 +1,5 @@
 const path = require('path')
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 const resolve = item => {
   return path.join(__dirname, '../', item)
@@ -19,6 +20,7 @@ module.exports = {
     builder: 'webpack5'
   },
   webpackFinal: config => {
+    console.log(config.plugins)
     Object.assign(config.resolve.alias, {
       '@static': resolve('src/static'),
       '@components': resolve('src/components'),
@@ -30,6 +32,8 @@ module.exports = {
       '@sagas': resolve('src/store/sagas'),
       '@consts': resolve('src/store/consts')
     })
+    config.plugins.push(new NodePolyfillPlugin())
+    console.log(config.plugins)
 
     // config.node = {
     //   fs: 'empty',

@@ -3,18 +3,18 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    width: 350,
-    height: 600
+    padding: 40
   },
-  input: {
-    color: colors.green.main,
-    '& fieldset': {
-      borderColor: colors.green.main,
-      color: colors.green.main
-    }
+  welcome: {
+    letterSpacing: '0.1em',
+    fontSize: 14,
+    fontWeight: 'bold',
+    background: colors.pink.gradient,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent'
   },
-  label: {
-    color: colors.green.main
+  title: {
+    color: colors.white.main
   }
 }))
 
