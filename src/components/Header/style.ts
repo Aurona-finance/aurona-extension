@@ -1,95 +1,56 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
-const useStyles = makeStyles(() => ({
-  root: {
-    padding: '25px',
-    paddingRight: 0
-  },
-  divButton: {
-    // marginLeft: 70
-  },
-  divAirdropButton: {
-    marginRight: 20
-  },
 
+const useStyles = makeStyles((theme: Theme) => ({
+  root: { height: 60, padding: '0px 30px', paddingRight: 15 },
+  logo: {
+    height: 30,
+    width: 30,
+    backgroundColor: colors.gray['#747474']
+  },
   button: {
-    width: 'auto',
-    color: colors.red.pinkish,
-    borderColor: colors.red.pinkish,
-    '&:hover': {
-      borderWidth: 2,
-      backgroundColor: `${colors.red.pinkish}`,
-      borderColor: colors.red.pinkish
-    }
-  },
-  buttonAirdrop: {
-    width: 'auto',
-    color: colors.green.main,
-    borderColor: colors.green.main,
-    '&:hover': {
-      borderWidth: 2,
-      backgroundColor: `${colors.green.main}`,
-      borderColor: colors.green.main
-    }
-  },
-  navigationRoot: {
-    background: 'none'
-  },
-  navigationTab: {
-    color: colors.gray.skeletonBackground,
-    width: 150
-  },
-  navigationTabSelected: {
-    color: colors.green.main,
-    fontSize: '22px !important'
-  },
-  navigationTabLabel: {
-    fontSize: 20
+    borderRadius: 5,
+    textTransform: 'none',
+    fontWeight: 'bold',
+    fontSize: '12px',
+    lineHeight: '14px',
+    transition: 'all 500ms ease',
+    minWidth: 110,
+    padding: '2px 10px',
+    color: colors.white.main,
+    border: '1px solid #FFFFFF'
+    // background:
+    //   'radial-gradient(97.27% 960.82% at 0% 0%, rgba(255, 161, 240, 0.4) 0%, rgba(134, 60, 255, 0.4) 100%)',
+    // '&:hover': {
+    //   background: 'none'
+    // }
   },
   drawer: {
+    borderRadius: '15px 15px 0px 0px',
+
     backgroundColor: colors.black.background
   },
-  networkButton: {
-    color: colors.red.pinkish,
-    borderColor: colors.red.pinkish,
-    borderWidth: 2,
-    '&:hover': {
-      borderWidth: 2,
-      color: colors.black.background,
-      backgroundColor: `${colors.red.pinkish}`,
-      borderColor: colors.red.pinkish
-    },
-    textAlign: 'left',
-    textTransform: 'none',
-    transition: '500ms',
-    borderRadius: 10
+  moreButton: {
+    color: colors.white.main,
+    marginTop: -2,
+    height: 30,
+    width: 30
   },
-  networkButtonDiv: {
-    width: '80%',
-    marginTop: 16
+  drawerRoot: {
+    borderRadius: '15px 15px 0px 0px',
+    width: 360,
+    paddingTop: 40,
+    paddingBottom: 40
   },
   drawerTitle: {
-    marginTop: 24,
-    fontWeight: 'bold',
-    textAlign: 'left'
+    padding: `0px 40px`,
+    marginBottom: 20
   },
-  drawerTitleDiv: {
-    width: '80%'
-  },
-  networkButtonDisabled: {
-    color: colors.gray.skeletonBackground,
-    borderColor: colors.gray.skeletonBackground,
-    borderWidth: 2,
+  drawerEntry: {
+    padding: `10px 40px`,
     '&:hover': {
-      borderWidth: 2,
-      color: colors.black.background,
-      backgroundColor: `${colors.gray.skeletonBackground}`,
-      borderColor: colors.gray.skeletonBackground
-    },
-    textAlign: 'left',
-    textTransform: 'none',
-    transition: '500ms',
-    borderRadius: 10
+      backgroundColor: 'rgba(255,255,255,0.05)'
+    }
   }
 }))
 

@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   markerSelected: {
     background: colors.pink.gradient,
+    marginRight: 15,
     height: 13,
     width: 13,
     border: `none`

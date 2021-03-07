@@ -1,127 +1,78 @@
 import React, { useState } from 'react'
-import { Button, Drawer, Grid, Typography } from '@material-ui/core'
-// import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
-import CommonButton from '@components/CommonButton/CommonButton'
-import { SolanaNetworks, networkToName } from '@static/index'
-
-import BlurOnIcon from '@material-ui/icons/BlurOn'
+import { Grid, Typography, IconButton, Drawer } from '@material-ui/core'
 import useStyles from './style'
-
-export interface IHeader {
-  onNetworkClick: (network: SolanaNetworks) => void
+import FilledButton from '@components/FilledButton/FilledButton'
+import { networkToName, SolanaNetworks } from '@static/index'
+import LanguageIcon from '@material-ui/icons/Language'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import ListEntry from '@components/ListEntry/ListEntry'
+interface IProps {
+  onNetworkChange: (network: SolanaNetworks) => void
   network: SolanaNetworks
 }
-export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
+export const SelectCreateAccount: React.FC<IProps> = ({ onNetworkChange, network }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   return (
-    <>
-      <Grid container className={classes.root} wrap='nowrap' justify='flex-end' alignItems='center'>
-        <Grid item>
-          <Grid container wrap='nowrap'>
-            {/* <Grid item className={classes.divAirdropButton}>
-              <CommonButton
-                className={classes.buttonAirdrop}
-                name={'Airdrop'}
-                startIcon={<BlurOnIcon style={{ fontSize: 27 }} />}
-                onClick={() => {
-                  setOpen(true)
-                }}></CommonButton>
-            </Grid> */}
-            <Grid item className={classes.divButton}>
-              <CommonButton
-                className={classes.button}
-                name={networkToName(network)}
-                startIcon={<BlurOnIcon style={{ fontSize: 27 }} />}
-                onClick={() => {
-                  setOpen(true)
-                }}></CommonButton>
-            </Grid>
+    <Grid
+      container
+      direction='row'
+      alignItems='center'
+      justify='space-between'
+      className={classes.root}>
+      <Grid item className={classes.logo}></Grid>
+      <Grid item>
+        <Grid container>
+          <Grid item>
+            <FilledButton
+              className={classes.button}
+              name={networkToName(network)}
+              variant='gray'
+              onClick={() => {
+                setOpen(true)
+              }}
+              startIcon={<LanguageIcon></LanguageIcon>}></FilledButton>
+          </Grid>
+          <Grid item>
+            <IconButton aria-label='delete' className={classes.moreButton}>
+              <MoreVertIcon />
+            </IconButton>
           </Grid>
         </Grid>
       </Grid>
       <Drawer
-        anchor='right'
+        anchor='bottom'
         open={open}
         onClose={() => {
           setOpen(false)
         }}
         classes={{ paper: classes.drawer }}>
-        <Grid container direction='column' justify='center' alignItems='center'>
-          <Grid item className={classes.drawerTitleDiv}>
-            <Typography variant='body1' color='textPrimary' className={classes.drawerTitle}>
-              Select network:
+        <Grid container className={classes.drawerRoot} direction='column'>
+          <Grid item>
+            <Typography variant='h2' className={classes.drawerTitle}>
+              Available networks
             </Typography>
           </Grid>
-          <Grid item className={classes.networkButtonDiv}>
-            <Button
-              variant='outlined'
-              onClick={() => {
-                onNetworkClick(SolanaNetworks.MAIN)
-                setOpen(false)
-              }}
-              className={
-                network === SolanaNetworks.MAIN
-                  ? classes.networkButton
-                  : classes.networkButtonDisabled
-              }>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography variant='body2'>Mainnet:</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6'>{SolanaNetworks.MAIN}</Typography>
-                </Grid>
+          {Object.entries(SolanaNetworks).map(([k, v]) => {
+            return (
+              <Grid
+                item
+                className={classes.drawerEntry}
+                onClick={() => {
+                  onNetworkChange(v)
+                }}>
+                <ListEntry
+                  label={networkToName(v)}
+                  // @ts-expect-error
+                  text={SolanaNetworks[k]}
+                  // @ts-expect-error
+                  selected={SolanaNetworks[k] === network}></ListEntry>
               </Grid>
-            </Button>
-          </Grid>
-          <Grid item className={classes.networkButtonDiv}>
-            <Button
-              variant='outlined'
-              onClick={() => {
-                onNetworkClick(SolanaNetworks.TEST)
-                setOpen(false)
-              }}
-              className={
-                network === SolanaNetworks.TEST
-                  ? classes.networkButton
-                  : classes.networkButtonDisabled
-              }>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography variant='body2'>Testnet:</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6'>{SolanaNetworks.TEST}</Typography>
-                </Grid>
-              </Grid>
-            </Button>
-          </Grid>
-          <Grid item className={classes.networkButtonDiv}>
-            <Button
-              variant='outlined'
-              onClick={() => {
-                onNetworkClick(SolanaNetworks.DEV)
-                setOpen(false)
-              }}
-              className={
-                network === SolanaNetworks.DEV
-                  ? classes.networkButton
-                  : classes.networkButtonDisabled
-              }>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography variant='body2'>Devnet:</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6'>{SolanaNetworks.DEV}</Typography>
-                </Grid>
-              </Grid>
-            </Button>
-          </Grid>
+            )
+          })}
         </Grid>
       </Drawer>
-    </>
+    </Grid>
   )
 }
-export default Header
+export default SelectCreateAccount
