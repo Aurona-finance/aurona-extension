@@ -5,7 +5,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.pink.gradient,
     width: '100%',
-    height: 1
+    height: 1,
+    opacity: 0.3
   }
 }))
 
