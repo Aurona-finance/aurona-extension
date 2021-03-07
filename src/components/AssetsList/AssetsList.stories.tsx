@@ -24,7 +24,11 @@ storiesOf('Components/AssetsList', module)
 
     return (
       <>
-        <AssetsList onAddAccount={() => console.log('onAddAccount')} tokens={tokens} />
+        <AssetsList
+          onTokenClick={() => {}}
+          onAddAccount={() => console.log('onAddAccount')}
+          tokens={tokens}
+        />
       </>
     )
   })

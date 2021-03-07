@@ -9,8 +9,13 @@ import ListEntry from '@components/ListEntry/ListEntry'
 interface IProps {
   onNetworkChange: (network: SolanaNetworks) => void
   network: SolanaNetworks
+  disableActions?: boolean
 }
-export const SelectCreateAccount: React.FC<IProps> = ({ onNetworkChange, network }) => {
+export const SelectCreateAccount: React.FC<IProps> = ({
+  onNetworkChange,
+  network,
+  disableActions = false
+}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   return (
@@ -29,7 +34,9 @@ export const SelectCreateAccount: React.FC<IProps> = ({ onNetworkChange, network
               name={networkToName(network)}
               variant='gray'
               onClick={() => {
-                setOpen(true)
+                if (!disableActions) {
+                  setOpen(true)
+                }
               }}
               startIcon={<LanguageIcon></LanguageIcon>}></FilledButton>
           </Grid>
