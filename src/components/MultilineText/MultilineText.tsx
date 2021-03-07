@@ -7,7 +7,7 @@ interface IProps {
   label: string
   onChange?: (text: string) => void
 }
-export const FilledButton: React.FC<IProps> = ({ text, label, onChange = () => {} }) => {
+export const MultilineText: React.FC<IProps> = ({ text, label, onChange = () => {} }) => {
   const classes = useStyles()
   return (
     <Grid container>
@@ -33,4 +33,4 @@ export const FilledButton: React.FC<IProps> = ({ text, label, onChange = () => {
     </Grid>
   )
 }
-export default FilledButton
+export default MultilineText

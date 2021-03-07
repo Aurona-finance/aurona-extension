@@ -8,7 +8,7 @@ interface IProps {
   label: string
   selected?: boolean
 }
-export const FilledButton: React.FC<IProps> = ({ text, label, selected = false }) => {
+export const ListEntry: React.FC<IProps> = ({ text, label, selected = false }) => {
   const classes = useStyles()
   return (
     <Grid container>
@@ -34,4 +34,4 @@ export const FilledButton: React.FC<IProps> = ({ text, label, selected = false }
     </Grid>
   )
 }
-export default FilledButton
+export default ListEntry

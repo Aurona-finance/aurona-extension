@@ -15,7 +15,7 @@ interface IProps {
   password: string
   label: string
 }
-export const FilledButton: React.FC<IProps> = ({ setPassword, password, label }) => {
+export const PasswordInput: React.FC<IProps> = ({ setPassword, password, label }) => {
   const classes = useStyles()
   const [show, setShow] = useState(false)
   return (
@@ -56,4 +56,4 @@ export const FilledButton: React.FC<IProps> = ({ setPassword, password, label })
     </Grid>
   )
 }
-export default FilledButton
+export default PasswordInput

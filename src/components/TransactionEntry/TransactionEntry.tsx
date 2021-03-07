@@ -6,7 +6,7 @@ interface IProps {
   text: string
   label: string
 }
-export const FilledButton: React.FC<IProps> = ({ text, label }) => {
+export const TransactionEntry: React.FC<IProps> = ({ text, label }) => {
   const classes = useStyles()
   return (
     <Grid container>
@@ -30,4 +30,4 @@ export const FilledButton: React.FC<IProps> = ({ text, label }) => {
     </Grid>
   )
 }
-export default FilledButton
+export default TransactionEntry
