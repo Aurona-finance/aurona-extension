@@ -12,6 +12,7 @@ import Confirm from '@pages/Confirm/Confirm'
 import { Status } from '@reducers/solanaWallet'
 import EventsHandlers from '@containers/EventsHandlers'
 import bg from '@static/jpg/bg.jpg'
+import GlobalLoader from '@containers/GlobalLoader/GlobalLoader'
 
 export interface IData {
   type: ACTION_TYPE
@@ -74,6 +75,7 @@ export const Root: React.FC = () => {
         }}>
         {initialized === Status.Uninitialized && <Initialize />}
         {data !== undefined && initialized === Status.Initalized && dataToComponent(data)}
+        <GlobalLoader></GlobalLoader>
       </div>
     </Grid>
   )
