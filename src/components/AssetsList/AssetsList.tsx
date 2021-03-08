@@ -1,19 +1,13 @@
 import React from 'react'
-import { Grid, Typography, IconButton, CardMedia } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import useStyles from './style'
 import Divider from '@components/Divider/Divider'
 import FilledButton from '@components/FilledButton/FilledButton'
 import { PublicKey } from '@solana/web3.js'
-import { BN } from '@project-serum/anchor'
 import AddIcon from '@material-ui/icons/Add'
 import Asset from '@components/Asset/Asset'
-interface ITokenAccount {
-  programId: PublicKey
-  balance: BN
-  address: PublicKey
-  decimals: number
-  ticker?: string
-}
+import { ITokenAccount } from '@reducers/solanaWallet'
+import { printBN } from '@static/utils'
 interface IProps {
   tokens?: ITokenAccount[]
   onAddAccount: () => void
@@ -22,10 +16,7 @@ interface IProps {
 export const AssetsList: React.FC<IProps> = ({ tokens, onAddAccount, onTokenClick }) => {
   const classes = useStyles()
   return (
-    <Grid
-      container
-      direction='column'
-      className={classes.root}>
+    <Grid container direction='column' className={classes.root}>
       <Grid item style={{ width: '100%' }}>
         <Grid container justify='space-between' alignItems='center'>
           <Grid item>
@@ -53,8 +44,8 @@ export const AssetsList: React.FC<IProps> = ({ tokens, onAddAccount, onTokenClic
           <>
             <Grid item>
               <Asset
-                balance={tokenAccount.balance.toString()}
-                name='ETH'
+                balance={printBN(tokenAccount.balance, tokenAccount.decimals)}
+                name={tokenAccount.ticker || tokenAccount.programId.toString()}
                 onClick={() => {
                   onTokenClick(tokenAccount.programId)
                 }}

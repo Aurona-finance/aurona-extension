@@ -23,9 +23,6 @@ export const Root: React.FC = () => {
   const [data, setData] = React.useState<IData>()
   const initialized = useSelector(status)
   const dispatch = useDispatch()
-  console.log(initialized)
-  // Handle open request
-  // const userAddress = useSelector(address)
   React.useEffect(() => {
     dispatch(solanaConnectionActions.initSolanaConnection())
   }, [dispatch])

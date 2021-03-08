@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PayloadType } from './types'
 import { BN } from '@project-serum/anchor'
+import { PublicKey } from '@solana/web3.js'
 
 export enum Status {
   Uninitialized = 'uninitialized',
@@ -9,10 +10,11 @@ export enum Status {
   Initalized = 'initalized'
 }
 export interface ITokenAccount {
-  programId: string
-  balance: number
-  address: string
+  programId: PublicKey
+  balance: BN
+  address: PublicKey
   decimals: number
+  ticker?: string
 }
 export interface ITokenData {
   programId: string
@@ -88,17 +90,17 @@ const solanaWalletSlice = createSlice({
       return state
     },
     addTokenAccount(state, action: PayloadAction<ITokenAccount>) {
-      if (!state.accounts[action.payload.programId]) {
-        state.accounts[action.payload.programId] = []
+      if (!state.accounts[action.payload.programId.toString()]) {
+        state.accounts[action.payload.programId.toString()] = []
       }
-      state.accounts[action.payload.programId].push(action.payload)
+      state.accounts[action.payload.programId.toString()].push(action.payload)
       return state
     },
     setTokenBalance(state, action: PayloadAction<IsetTokenBalance>) {
-      const index = state.accounts[action.payload.programId].findIndex(
-        account => account.address === action.payload.address
+      const index = state.accounts[action.payload.programId.toString()].findIndex(account =>
+        account.address.equals(action.payload.address)
       )
-      state.accounts[action.payload.programId][index].balance = action.payload.balance
+      state.accounts[action.payload.programId.toString()][index].balance = action.payload.balance
       return state
     },
     // Triggers rescan for tokens that we control
@@ -107,9 +109,9 @@ const solanaWalletSlice = createSlice({
   }
 })
 interface IsetTokenBalance {
-  address: string
-  programId: string
-  balance: number
+  address: PublicKey
+  programId: PublicKey
+  balance: BN
 }
 interface IaddTransaction {
   recipient: string

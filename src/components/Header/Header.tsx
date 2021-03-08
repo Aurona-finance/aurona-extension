@@ -5,16 +5,19 @@ import { networkToName, SolanaNetworks } from '@static/index'
 import LanguageIcon from '@material-ui/icons/Language'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ListEntry from '@components/ListEntry/ListEntry'
+import FlightIcon from '@material-ui/icons/Flight'
 import useStyles from './style'
 interface IProps {
   onNetworkChange: (network: SolanaNetworks) => void
   network: SolanaNetworks
   disableActions?: boolean
+  onAirdrop?: () => void
 }
 export const SelectCreateAccount: React.FC<IProps> = ({
   onNetworkChange,
   network,
-  disableActions = false
+  disableActions = false,
+  onAirdrop = () => {}
 }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
@@ -28,6 +31,18 @@ export const SelectCreateAccount: React.FC<IProps> = ({
       <Grid item className={classes.logo}></Grid>
       <Grid item>
         <Grid container>
+          {network !== SolanaNetworks.MAIN && !disableActions && (
+            <Grid item>
+              <FilledButton
+                className={classes.airdropButton}
+                name={'Airdrop'}
+                variant='gray'
+                startIcon={<FlightIcon></FlightIcon>}
+                onClick={() => {
+                  onAirdrop()
+                }}></FilledButton>
+            </Grid>
+          )}
           <Grid item>
             <FilledButton
               className={classes.button}

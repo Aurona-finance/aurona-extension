@@ -31,6 +31,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     //   background: 'none'
     // }
   },
+  airdropButton: {
+    borderRadius: 5,
+    textTransform: 'none',
+    fontWeight: 'bold',
+    fontSize: '12px',
+    lineHeight: '14px',
+    transition: 'all 500ms ease',
+    minWidth: 70,
+    padding: '2px 8px',
+    color: colors.white.main,
+    border: '1px solid #FFFFFF',
+    marginRight: 15
+    // background:
+    //   'radial-gradient(97.27% 960.82% at 0% 0%, rgba(255, 161, 240, 0.4) 0%, rgba(134, 60, 255, 0.4) 100%)',
+    // '&:hover': {
+    //   background: 'none'
+    // }
+  },
   drawer: {
     borderRadius: '15px 15px 0px 0px',
 

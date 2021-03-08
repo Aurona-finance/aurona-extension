@@ -11,16 +11,16 @@ import {
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
-import { getSolanaWallet, TokenProgramMap } from '@web3/solana/wallet'
+import { getSolanaWallet } from '@web3/solana/wallet'
 import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Token } from '@solana/spl-token'
-import { network } from '@selectors/solanaConnection'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
-import { address } from '@selectors/solanaWallet'
 // import { createToken } from './token'
 import { BN } from '@project-serum/anchor'
+import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
+import { sleep, tou64 } from '@static/utils'
 
 export function* getWallet(): SagaGenerator<Account> {
   const wallet = yield* call(getSolanaWallet)
@@ -39,19 +39,19 @@ export function* handleTransaction(
   // Send token
   try {
     if (action.payload.token && action.payload.accountAddress) {
-      const signature = yield* call(
-        sendToken,
-        action.payload.accountAddress,
-        action.payload.recipient,
-        action.payload.amount * 1e9,
-        action.payload.token
-      )
-      yield put(
-        actions.setTransactionTxid({
-          txid: signature,
-          id: action.payload.id
-        })
-      )
+      // const signature = yield* call(
+      //   sendToken,
+      //   action.payload.accountAddress,
+      //   action.payload.recipient,
+      //   action.payload.amount * 1e9,
+      //   action.payload.token
+      // )
+      // yield put(
+      //   actions.setTransactionTxid({
+      //     txid: signature,
+      //     id: action.payload.id
+      //   })
+      // )
     } else {
       // Send SOL
       const signature = yield* call(
@@ -102,39 +102,31 @@ interface IparsedTokenInfo {
 }
 export function* fetchTokensAccounts(): Generator {
   const connection = yield* call(getConnection)
-  const currentNetwork = yield* select(network)
   const wallet = yield* call(getWallet)
   const tokensAccounts = yield* call(
     [connection, connection.getParsedTokenAccountsByOwner],
     wallet.publicKey,
     {
-      programId: new PublicKey(TokenProgramMap[currentNetwork])
+      programId: TOKEN_PROGRAM_ID
     }
   )
-
   for (const account of tokensAccounts.value) {
     const info: IparsedTokenInfo = account.account.data.parsed.info
-    yield put(
+    yield* put(
       actions.addTokenAccount({
-        programId: info.mint,
-        balance: parseInt(info.tokenAmount.amount),
-        address: account.pubkey.toString(),
+        programId: new PublicKey(info.mint),
+        balance: new BN(info.tokenAmount.amount),
+        address: account.pubkey,
         decimals: info.tokenAmount.decimals
       })
     )
   }
 }
 
-export function* getToken(tokenAddress: string): SagaGenerator<Token> {
+export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
-  const currentNetwork = yield* select(network)
-  const token = new Token(
-    connection,
-    new PublicKey(tokenAddress),
-    new PublicKey(TokenProgramMap[currentNetwork]),
-    wallet
-  )
+  const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, wallet)
   return token
 }
 
@@ -156,24 +148,17 @@ export function* handleAirdrop(): Generator {
 //   return balance
 // }
 export function* sendToken(
-  from: string,
-  target: string,
-  amount: number,
-  tokenAddress: string
+  from: PublicKey,
+  target: PublicKey,
+  amount: BN,
+  tokenAddress: PublicKey
 ): SagaGenerator<string> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
-  const signature = yield* call(
-    [token, token.transfer],
-    new PublicKey(from),
-    new PublicKey(target),
-    wallet,
-    [],
-    amount
-  )
+  const signature = yield* call([token, token.transfer], from, target, wallet, [], tou64(amount))
   return signature
 }
-export function* createAccount(tokenAddress: string): SagaGenerator<string> {
+export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
 
@@ -181,12 +166,13 @@ export function* createAccount(tokenAddress: string): SagaGenerator<string> {
   yield* put(
     actions.addTokenAccount({
       programId: tokenAddress,
-      balance: 0,
-      address: address.toString(),
-      decimals: 9
+      balance: new BN(0),
+      address: address,
+      decimals: 8
     })
   )
-  return address.toString()
+  yield* call(sleep, 1000) // Give time to subscribe to new token
+  return address
 }
 
 export function* init(): Generator {
@@ -198,6 +184,7 @@ export function* init(): Generator {
   yield* put(actions.setAddress(wallet.publicKey.toString()))
   yield* put(actions.setBalance(new BN(balance)))
   yield* put(actions.setStatus(Status.Initalized))
+  // yield* call(handleAirdrop)
 }
 
 export function* aridropSaga(): Generator {
@@ -207,7 +194,9 @@ export function* aridropSaga(): Generator {
 export function* transactionsSaga(): Generator {
   yield takeEvery(actions.addTransaction, handleTransaction)
 }
-
+export function* handleInitWallet(): Generator {
+  yield takeLeading(actions.initWallet, init)
+}
 export function* walletSaga(): Generator {
-  yield all([transactionsSaga, aridropSaga].map(spawn))
+  yield all([transactionsSaga, aridropSaga, handleInitWallet].map(spawn))
 }
