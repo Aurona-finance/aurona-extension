@@ -57,6 +57,9 @@ const solanaWalletSlice = createSlice({
     initWallet(state) {
       return state
     },
+    createAccount(state, _action: PayloadAction<PublicKey>) {
+      return state
+    },
     setAddress(state, action: PayloadAction<string>) {
       state.address = action.payload
       return state

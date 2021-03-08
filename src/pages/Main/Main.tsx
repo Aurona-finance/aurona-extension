@@ -3,28 +3,43 @@ import useStyles from './style'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions as walletActions } from '@reducers/solanaWallet'
 import { accountsWithSol, address, balance } from '@selectors/solanaWallet'
+import { position } from '@selectors/ui'
 import Header from '@containers/Header/Header'
-import MainComponent from '@components/Main/Main'
-import AssetsList from '@components/AssetsList/AssetsList'
+import MainContainer from '@containers/Main/Main'
+import AssetsListContainer from '@containers/AssetsList/AssetsList'
+import AddAccountContainer from '@containers/AddAccount/AddAccount'
+import { UI_POSITION } from '@reducers/ui'
 
 export const Main: React.FC = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const userAddress = useSelector(address)
-  const userBalance = useSelector(balance)
-  const tokens = useSelector(accountsWithSol)
+  const uiPosition = useSelector(position)
   React.useEffect(() => {
     dispatch(walletActions.initWallet())
   }, [dispatch])
+  const positionToComponent = (position: UI_POSITION) => {
+    switch (position) {
+      case UI_POSITION.MAIN:
+        return (
+          <>
+            <MainContainer />
+            <AssetsListContainer />
+          </>
+        )
+      case UI_POSITION.CREATE_ACCOUNT:
+        return (
+          <>
+            <AddAccountContainer />
+          </>
+        )
+      default:
+        return <></>
+    }
+  }
   return (
     <>
       <Header />
-      <MainComponent
-        address={userAddress}
-        balance={(userBalance.toNumber() / 1e9).toString()}
-        onSend={() => {}}
-      />
-      <AssetsList onTokenClick={() => {}} tokens={tokens} onAddAccount={() => {}}></AssetsList>
+      {positionToComponent(uiPosition)}
     </>
   )
 }

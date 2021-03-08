@@ -14,7 +14,7 @@ import { getConnection } from './connection'
 import { getSolanaWallet } from '@web3/solana/wallet'
 import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Token } from '@solana/spl-token'
-import { actions as uiActions } from '@reducers/ui'
+import { actions as uiActions, UI_POSITION } from '@reducers/ui'
 
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
@@ -128,6 +128,7 @@ export function* fetchTokensAccounts(): Generator {
 export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
+  console.log(TOKEN_PROGRAM_ID.toString())
   const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, wallet)
   return token
 }
@@ -163,8 +164,20 @@ export function* sendToken(
 export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
-
+  const connection = yield* call(getConnection)
+  const as = yield* call(
+    [Token, Token.createMint],
+    connection,
+    wallet,
+    wallet.publicKey,
+    wallet.publicKey,
+    10,
+    new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
+  )
+  console.log(as)
+  console.log(yield* call([token, token.createAccount], wallet.publicKey))
   const address = yield* call([token, token.createAccount], wallet.publicKey)
+  console.log(address)
   yield* put(
     actions.addTokenAccount({
       programId: tokenAddress,
@@ -201,6 +214,35 @@ export function* init(): Generator {
   // yield* call(handleAirdrop)
 }
 
+export function* handleCreateAccount(
+  action: PayloadAction<PayloadTypes['createAccount']>
+): Generator {
+  try {
+    yield* put(
+      uiActions.setLoader({
+        open: true,
+        message: ''
+      })
+    )
+    console.log(action.payload.toString())
+    yield* call(createAccount, action.payload)
+    yield* put(uiActions.setUiPosition(UI_POSITION.MAIN))
+    yield* put(
+      uiActions.setLoader({
+        open: false,
+        message: ''
+      })
+    )
+  } catch (error) {
+    console.log(error)
+    yield* put(
+      uiActions.setLoader({
+        open: false,
+        message: ''
+      })
+    )
+  }
+}
 export function* aridropSaga(): Generator {
   yield takeLeading(actions.airdrop, handleAirdrop)
 }
@@ -208,9 +250,12 @@ export function* aridropSaga(): Generator {
 export function* transactionsSaga(): Generator {
   yield takeEvery(actions.addTransaction, handleTransaction)
 }
+export function* createAccountHandler(): Generator {
+  yield takeLeading(actions.createAccount, handleCreateAccount)
+}
 export function* handleInitWallet(): Generator {
   yield takeLeading(actions.initWallet, init)
 }
 export function* walletSaga(): Generator {
-  yield all([transactionsSaga, aridropSaga, handleInitWallet].map(spawn))
+  yield all([transactionsSaga, aridropSaga, handleInitWallet, createAccountHandler].map(spawn))
 }
