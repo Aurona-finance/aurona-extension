@@ -20,7 +20,7 @@ module.exports = {
     builder: 'webpack5'
   },
   webpackFinal: config => {
-    console.log(config.plugins)
+    console.log(config.node)
     Object.assign(config.resolve.alias, {
       '@static': resolve('src/static'),
       '@components': resolve('src/components'),
@@ -32,16 +32,12 @@ module.exports = {
       '@sagas': resolve('src/store/sagas'),
       '@consts': resolve('src/store/consts')
     })
+    Object.assign(config.resolve.fallback, {
+      fs: false
+    })
     config.plugins.push(new NodePolyfillPlugin())
-    console.log(config.plugins)
+    // console.log(config.plugins)
 
-    // config.node = {
-    //   fs: 'empty',
-    //   tls: 'empty',
-    //   net: 'empty',
-    //   module: 'empty',
-    //   console: true
-    // }
     return config
   }
 }
