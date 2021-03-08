@@ -13,11 +13,13 @@ export interface Loader {
 export interface IUIStore {
   loader: Loader
   position: UI_POSITION
+  loadingTokens: boolean
 }
 
 export const defaultState: IUIStore = {
   loader: { open: false, message: '' },
-  position: UI_POSITION.MAIN
+  position: UI_POSITION.MAIN,
+  loadingTokens: true
 }
 export const uiSliceName = 'ui'
 const uiSlice = createSlice({
@@ -30,6 +32,10 @@ const uiSlice = createSlice({
     },
     setUiPosition(state, action: PayloadAction<UI_POSITION>) {
       state.position = action.payload
+      return state
+    },
+    setLoadingToken(state, action: PayloadAction<boolean>) {
+      state.loadingTokens = action.payload
       return state
     }
   }

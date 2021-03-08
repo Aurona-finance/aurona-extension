@@ -103,6 +103,7 @@ interface IparsedTokenInfo {
   }
 }
 export function* fetchTokensAccounts(): Generator {
+  yield* put(uiActions.setLoadingToken(true))
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
   const tokensAccounts = yield* call(
@@ -123,6 +124,7 @@ export function* fetchTokensAccounts(): Generator {
       })
     )
   }
+  yield* put(uiActions.setLoadingToken(false))
 }
 
 export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
@@ -199,6 +201,7 @@ export function* init(): Generator {
       message: ''
     })
   )
+  yield* call(fetchTokensAccounts)
   // yield* call(handleAirdrop)
 }
 

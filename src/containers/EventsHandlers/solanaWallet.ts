@@ -8,6 +8,7 @@ import { AccountInfo, PublicKey } from '@solana/web3.js'
 import { getCurrentSolanaConnection } from '@web3/solana/connection'
 import { Status } from '@reducers/solanaConnection'
 import BN from 'bn.js'
+import { parseTokenAccountData } from '@web3/solana/data'
 
 const SolanaWalletEvents = () => {
   const dispatch = useDispatch()
@@ -37,38 +38,38 @@ const SolanaWalletEvents = () => {
   // Solana Tokens
 
   // TODO refactor
-  // const tokensAccounts = useSelector(accounts)
-  // const walletStat = useSelector(walletStatus)
-  // const [initializedAccounts, setInitializedAccounts] = useState<Set<string>>(new Set())
-  // React.useEffect(() => {
-  //   const connection = getCurrentSolanaConnection()
-  //   if (!connection || walletStat !== Status.Initalized || networkStatus !== Status.Initalized) {
-  //     return
-  //   }
-  //   const connectEvents = () => {
-  //     const tempSet = new Set<string>()
-  //     R.forEachObj(tokensAccounts, tokenAccounts => {
-  //       for (const account of tokenAccounts) {
-  //         tempSet.add(account.address.toString())
-  //         if (initializedAccounts.has(account.address.toString())) {
-  //           continue
-  //         }
-  //         connection.onAccountChange(account.address, (accountInfo: AccountInfo<Buffer>) => {
-  //           const parsedData = parseTokenAccountData(accountInfo.data)
-  //           dispatch(
-  //             actions.setTokenBalance({
-  //               address: account.address.toString(),
-  //               programId: parsedData.token.toString(),
-  //               balance: parsedData.amount
-  //             })
-  //           )
-  //         })
-  //       }
-  //     })
-  //     setInitializedAccounts(tempSet)
-  //   }
-  //   connectEvents()
-  // }, [dispatch, tokensAccounts, networkStatus, walletStat])
+  const tokensAccounts = useSelector(accounts)
+  const walletStat = useSelector(walletStatus)
+  const [initializedAccounts, setInitializedAccounts] = useState<Set<string>>(new Set())
+  React.useEffect(() => {
+    const connection = getCurrentSolanaConnection()
+    if (!connection || walletStat !== Status.Initalized || networkStatus !== Status.Initalized) {
+      return
+    }
+    const connectEvents = () => {
+      const tempSet = new Set<string>()
+      R.forEachObj(tokensAccounts, tokenAccounts => {
+        for (const account of tokenAccounts) {
+          tempSet.add(account.address.toString())
+          if (initializedAccounts.has(account.address.toString())) {
+            continue
+          }
+          connection.onAccountChange(account.address, (accountInfo: AccountInfo<Buffer>) => {
+            const parsedData = parseTokenAccountData(accountInfo.data)
+            dispatch(
+              actions.setTokenBalance({
+                address: account.address,
+                programId: parsedData.token,
+                balance: new BN(parsedData.amount)
+              })
+            )
+          })
+        }
+      })
+      setInitializedAccounts(tempSet)
+    }
+    connectEvents()
+  }, [dispatch, tokensAccounts, networkStatus, walletStat])
 
   return null
 }
