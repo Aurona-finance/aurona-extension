@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PayloadType } from './types'
-import { BN } from '@project-serum/anchor'
+import BN from 'bn.js'
 import { PublicKey } from '@solana/web3.js'
 
 export enum Status {

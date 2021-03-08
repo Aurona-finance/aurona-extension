@@ -1,4 +1,4 @@
-import { BN } from '@project-serum/anchor'
+import BN from 'bn.js'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import { DEFAULT_PUBLICKEY } from '@static/index'

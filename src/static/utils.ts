@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import { Account } from '@solana/web3.js'
-import { BN } from '@project-serum/anchor'
+import BN from 'bn.js'
 import { u64 } from '@solana/spl-token'
 
 export const sleep = (ms: number) => {

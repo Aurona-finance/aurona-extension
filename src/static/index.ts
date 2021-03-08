@@ -32,4 +32,5 @@ export const networkToName = (network: SolanaNetworks) => {
   }
 }
 const DEFAULT_PUBLICKEY = new PublicKey(0)
-export { SolanaNetworks, DEFAULT_PUBLICKEY }
+const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
+export { SolanaNetworks, DEFAULT_PUBLICKEY, TOKEN_PROGRAM_ID }

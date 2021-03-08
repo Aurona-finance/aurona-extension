@@ -20,8 +20,8 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 // import { createToken } from './token'
-import { BN } from '@project-serum/anchor'
-import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
+import BN from 'bn.js'
+import { TOKEN_PROGRAM_ID } from '@static/index'
 import { sleep, tou64 } from '@static/utils'
 
 export function* getWallet(): SagaGenerator<Account> {
@@ -165,16 +165,16 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
-  const as = yield* call(
-    [Token, Token.createMint],
-    connection,
-    wallet,
-    wallet.publicKey,
-    wallet.publicKey,
-    10,
-    new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
-  )
-  console.log(as)
+  // const as = yield* call(
+  //   [Token, Token.createMint],
+  //   connection,
+  //   wallet,
+  //   wallet.publicKey,
+  //   wallet.publicKey,
+  //   10,
+  //   new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
+  // )
+  // console.log(as)
   console.log(yield* call([token, token.createAccount], wallet.publicKey))
   const address = yield* call([token, token.createAccount], wallet.publicKey)
   console.log(address)

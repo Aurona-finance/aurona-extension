@@ -7,7 +7,7 @@ import { actions } from '@reducers/solanaWallet'
 import { AccountInfo, PublicKey } from '@solana/web3.js'
 import { getCurrentSolanaConnection } from '@web3/solana/connection'
 import { Status } from '@reducers/solanaConnection'
-import { BN } from '@project-serum/anchor'
+import BN from 'bn.js'
 
 const SolanaWalletEvents = () => {
   const dispatch = useDispatch()
