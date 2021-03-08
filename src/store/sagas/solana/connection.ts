@@ -25,13 +25,13 @@ export function* initConnection(): Generator {
     yield* put(actions.setNetwork(connection._rpcEndpoint as SolanaNetworks))
     // yield* call(init)
     yield* put(actions.setStatus(Status.Initalized))
-    yield* put(
-      snackbarsActions.add({
-        message: 'Solana network connected.',
-        variant: 'success',
-        persist: false
-      })
-    )
+    // yield* put(
+    //   snackbarsActions.add({
+    //     message: 'Solana network connected.',
+    //     variant: 'success',
+    //     persist: false
+    //   })
+    // )
     // yield* call(sleep, 2000)
     // yield* call(handleAirdrop)
   } catch (error) {
@@ -69,13 +69,13 @@ export function* handleNetworkChange(
       message: ''
     })
   )
-  yield* put(
-    snackbarsActions.add({
-      message: `You are on ${networkToName(action.payload)} network.`,
-      variant: 'info',
-      persist: false
-    })
-  )
+  // yield* put(
+  //   snackbarsActions.add({
+  //     message: `You are on ${networkToName(action.payload)} network.`,
+  //     variant: 'info',
+  //     persist: false
+  //   })
+  // )
 }
 
 export function* networkChangeSaga(): Generator {

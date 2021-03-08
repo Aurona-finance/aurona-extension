@@ -22,7 +22,7 @@ const persistSolanaNetwork = {
 
 const combinedReducers = combineReducers({
   [snackbarsSliceName]: snackbarsReducer,
-  [uiSliceName]: persistReducer(uiPersist, uiReducer),
+  [uiSliceName]: uiReducer,
   [solanaConnectionSliceName]: persistReducer(persistSolanaNetwork, solanaConnectionReducer),
   [solanaWalletSliceName]: solanaWalletReducer
 })

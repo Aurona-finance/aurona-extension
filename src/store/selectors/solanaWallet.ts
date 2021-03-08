@@ -53,6 +53,9 @@ export const accountsWithSol = createSelector(
     const accs = Object.values(tokensAccounts).reduce((acc, accounts) => {
       return acc.concat(accounts)
     }, [] as ITokenAccount[])
+    if (!solAddress) {
+      return accs
+    }
     accs.push({
       address: new PublicKey(solAddress),
       balance: solBalance,

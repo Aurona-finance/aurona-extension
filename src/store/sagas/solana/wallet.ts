@@ -14,6 +14,8 @@ import { getConnection } from './connection'
 import { getSolanaWallet } from '@web3/solana/wallet'
 import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Token } from '@solana/spl-token'
+import { actions as uiActions } from '@reducers/ui'
+
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
@@ -176,6 +178,12 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
 }
 
 export function* init(): Generator {
+  yield* put(
+    uiActions.setLoader({
+      open: true,
+      message: ''
+    })
+  )
   const wallet = yield* call(getWallet)
   const balance = yield* call(getBalance, wallet.publicKey)
   // yield* call(fetchTokensAccounts)
@@ -184,6 +192,12 @@ export function* init(): Generator {
   yield* put(actions.setAddress(wallet.publicKey.toString()))
   yield* put(actions.setBalance(new BN(balance)))
   yield* put(actions.setStatus(Status.Initalized))
+  yield* put(
+    uiActions.setLoader({
+      open: false,
+      message: ''
+    })
+  )
   // yield* call(handleAirdrop)
 }
 
