@@ -2,32 +2,37 @@ import React, { useState } from 'react'
 import * as R from 'remeda'
 import { useDispatch, useSelector } from 'react-redux'
 import { accounts, address, status as walletStatus } from '@selectors/solanaWallet'
-import { status } from '@selectors/solanaConnection'
+import { network, status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/solanaWallet'
 import { AccountInfo, PublicKey } from '@solana/web3.js'
 import { getCurrentSolanaConnection } from '@web3/solana/connection'
 import { Status } from '@reducers/solanaConnection'
-import { parseTokenAccountData } from '@web3/solana/data'
 import { BN } from '@project-serum/anchor'
 
 const SolanaWalletEvents = () => {
   const dispatch = useDispatch()
   const publicKey = useSelector(address)
   const networkStatus = useSelector(status)
+  const currentNetwork = useSelector(network)
   // Solana Main Wallet
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
     if (!publicKey || !connection || networkStatus !== Status.Initalized) {
       return
     }
-    const connectEvents = () => {
-      connection.onAccountChange(new PublicKey(publicKey), (accountInfo: AccountInfo<Buffer>) => {
+    const id = connection.onAccountChange(
+      new PublicKey(publicKey),
+      (accountInfo: AccountInfo<Buffer>) => {
         dispatch(actions.setBalance(new BN(accountInfo.lamports)))
+        console.log(accountInfo)
         // console.log(accountInfo)
-      })
+      }
+    )
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      connection.removeAccountChangeListener(id)
     }
-    connectEvents()
-  }, [dispatch, publicKey, networkStatus])
+  }, [dispatch, publicKey, networkStatus, currentNetwork])
 
   // Solana Tokens
 

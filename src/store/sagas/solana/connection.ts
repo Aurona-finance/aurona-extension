@@ -55,6 +55,7 @@ export function* handleNetworkChange(
       message: `Loading ${networkToName(action.payload)} wallet.`
     })
   )
+  yield* put(solanaWalletActions.setStatus(Status.Init))
   // yield* put(solanaWalletActions.resetState())
   yield* call(setDataExtensionStorage, 'network', action.payload)
   chrome.runtime.sendMessage({
