@@ -7,6 +7,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   usdBalance: {
     color: colors.gray['#747474']
+  },
+  balanceName: {
+    width: 170,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden !important',
+    textOverflow: 'ellipsis'
   }
 }))
 

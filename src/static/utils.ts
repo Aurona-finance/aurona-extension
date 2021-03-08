@@ -83,6 +83,10 @@ export const transformBN = (amount: BN): string => {
 }
 export const printBN = (amount: BN, decimals: number): string => {
   const balanceString = amount.toString()
+
+  if (balanceString === '0') {
+    return '0.0'
+  }
   if (balanceString.length <= decimals) {
     return '0.' + '0'.repeat(decimals - balanceString.length) + balanceString
   } else {

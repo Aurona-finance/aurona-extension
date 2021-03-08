@@ -164,20 +164,8 @@ export function* sendToken(
 export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
-  const connection = yield* call(getConnection)
-  // const as = yield* call(
-  //   [Token, Token.createMint],
-  //   connection,
-  //   wallet,
-  //   wallet.publicKey,
-  //   wallet.publicKey,
-  //   10,
-  //   new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
-  // )
-  // console.log(as)
-  console.log(yield* call([token, token.createAccount], wallet.publicKey))
+
   const address = yield* call([token, token.createAccount], wallet.publicKey)
-  console.log(address)
   yield* put(
     actions.addTokenAccount({
       programId: tokenAddress,

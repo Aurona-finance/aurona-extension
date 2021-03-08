@@ -27,7 +27,9 @@ export const Asset: React.FC<IProps> = ({ balance, balanceUsd, onClick, name, ic
           <Grid item>
             <Grid container direction='column'>
               <Grid item>
-                <Typography variant='h3'>{`${balance.toString()} ${name}`}</Typography>
+                <Typography
+                  variant='h3'
+                  className={classes.balanceName}>{`${balance.toString()} ${name}`}</Typography>
               </Grid>
               <Grid item style={{ marginTop: 4 }}>
                 <Typography variant='body1' className={classes.usdBalance}>{`${
