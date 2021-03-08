@@ -22,7 +22,7 @@ export const SelectCreateAccount: React.FC<IProps> = ({ onFromSeed, onNew }) => 
       </Grid>
       <Grid item style={{ marginTop: 15 }}>
         <Typography variant='h1' className={classes.title}>
-          Create or import password
+          Create or import account
         </Typography>
       </Grid>
       <Grid item style={{ marginTop: 80, width: '100%' }}>

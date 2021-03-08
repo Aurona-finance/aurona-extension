@@ -23,17 +23,17 @@ export function* initConnection(): Generator {
     const connection = yield* call(getConnection)
     // @ts-expect-error
     yield* put(actions.setNetwork(connection._rpcEndpoint as SolanaNetworks))
-    yield* call(init)
+    // yield* call(init)
     yield* put(actions.setStatus(Status.Initalized))
-    yield put(
+    yield* put(
       snackbarsActions.add({
         message: 'Solana network connected.',
         variant: 'success',
         persist: false
       })
     )
-    yield* call(sleep, 2000)
-    yield* call(handleAirdrop)
+    // yield* call(sleep, 2000)
+    // yield* call(handleAirdrop)
   } catch (error) {
     yield put(actions.setStatus(Status.Error))
     yield put(

@@ -28,7 +28,15 @@ storiesOf('Pages/SignTransaction', module)
             console.log('onConfirm')
           }}
           website='synthetify.io'
-          transactions={['121212121212', 'asdasdasdasdasd', 'asdasdasdasdasd']}
+          transactions={[
+            '121212121212',
+            'asdasdasdasdasd',
+            'asdasdasdasdasd',
+            'asdasdasdasdasd',
+            'asdasdasdasdasd',
+            'asdasdasdasdasd',
+            'asdasdasdasdasd'
+          ]}
         />
       </div>
     )

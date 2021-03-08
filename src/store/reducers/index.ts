@@ -14,21 +14,16 @@ const uiPersist = {
   key: 'ui',
   storage: storage
 }
-// chrome.storage.local.get(['persist:localStorage'], items => {
-//   console.log(items)
-//   console.log('#################')
-//   // const rootParsed = JSON.parse(items['persist:localStorage'])
+const persistSolanaNetwork = {
+  key: solanaConnectionSliceName,
+  storage: storage,
+  whitelist: ['navigation']
+}
 
-//   // Keep in mind that each reducer must be parsed separately
-//   // const someReducer = JSON.parse(parsed.someReducer)
-
-//   // `someReducer` will be the contents of the reducer of that name when last persisted
-// })
 const combinedReducers = combineReducers({
   [snackbarsSliceName]: snackbarsReducer,
   [uiSliceName]: persistReducer(uiPersist, uiReducer),
-  [solanaConnectionSliceName]: solanaConnectionReducer,
-  // [solanaWalletSliceName]: persistReducer(authPersistConfig, solanaWalletReducer)
+  [solanaConnectionSliceName]: persistReducer(persistSolanaNetwork, solanaConnectionReducer),
   [solanaWalletSliceName]: solanaWalletReducer
 })
 export default combinedReducers

@@ -12,13 +12,12 @@ export const HeaderWrapper: React.FC = () => {
 
   return (
     <Header
-      onNetworkClick={(network: SolanaNetworks) => {
+      network={currentNetwork}
+      onNetworkChange={(network: SolanaNetworks) => {
         if (network !== currentNetwork) {
           dispatch(actions.changeNetwork(network))
         }
-      }}
-      network={currentNetwork}
-    />
+      }}></Header>
   )
 }
 

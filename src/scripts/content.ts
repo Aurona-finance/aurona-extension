@@ -23,7 +23,8 @@ export class ExtensionWallet implements Wallet {
           data: {
             transaction: JSON.stringify(
               tx.serialize({ requireAllSignatures: false, verifySignatures: false })
-            )
+            ),
+            host: window.location.origin
           }
         },
         '*'
@@ -42,7 +43,8 @@ export class ExtensionWallet implements Wallet {
           data: {
             transactions: JSON.stringify(
               txs.map(tx => tx.serialize({ requireAllSignatures: false, verifySignatures: false }))
-            )
+            ),
+            host: window.location.origin
           }
         },
         '*'

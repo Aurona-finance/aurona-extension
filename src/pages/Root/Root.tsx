@@ -11,6 +11,8 @@ import Initialize from '@pages/Initialize/Initialize'
 import Confirm from '@pages/Confirm/Confirm'
 import { Status } from '@reducers/solanaWallet'
 import EventsHandlers from '@containers/EventsHandlers'
+import bg from '@static/jpg/bg.jpg'
+
 export interface IData {
   type: ACTION_TYPE
   id: string
@@ -24,11 +26,10 @@ export const Root: React.FC = () => {
   console.log(initialized)
   // Handle open request
   // const userAddress = useSelector(address)
-  // React.useEffect(() => {
-  //   if (data !== undefined && initialized === Status.Initalized) {
-  //     dispatch(solanaConnectionActions.initSolanaConnection())
-  //   }
-  // }, [dispatch, initialized, data])
+  React.useEffect(() => {
+    dispatch(solanaConnectionActions.initSolanaConnection())
+  }, [dispatch])
+
   React.useEffect(() => {
     chrome.storage.local.get('key', function (d) {
       const _data = d.key
@@ -56,9 +57,27 @@ export const Root: React.FC = () => {
     }
   }
   return (
-    <Grid container style={{ width: 360, height: 600 }}>
-      {initialized === Status.Uninitialized && <Initialize />}
-      {data !== undefined && initialized === Status.Initalized && dataToComponent(data)}
+    <Grid
+      container
+      style={{
+        width: 360,
+        height: 600,
+        backgroundImage: `url(${bg})`,
+        overflow: 'hidden',
+        position: 'relative'
+      }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          bottom: -20,
+          right: -15,
+          overflow: 'scroll'
+        }}>
+        {initialized === Status.Uninitialized && <Initialize />}
+        {data !== undefined && initialized === Status.Initalized && dataToComponent(data)}
+      </div>
     </Grid>
   )
 }

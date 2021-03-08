@@ -11,7 +11,7 @@ interface IProps {
   address: string
   balance: string
   balanceUsd?: string
-  onSend: () => {}
+  onSend: () => void
 }
 export const Main: React.FC<IProps> = ({ balance, balanceUsd, address, onSend }) => {
   const classes = useStyles()

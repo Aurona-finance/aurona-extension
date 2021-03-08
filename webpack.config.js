@@ -33,33 +33,24 @@ const config = {
         exclude: /node_modules/
       },
       {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true
-            }
-          }
-        ],
-        include: /\.module\.css$/
-      },
-      {
         test: /\.svg$/,
         use: 'file-loader'
       },
+      // {
+      //   test: /\.(png|jpe?g|gif|jp2|webp)$/,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: 'images/[name].[ext]'
+      //   }
+      // },
       {
-        test: /\.png$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              mimetype: 'image/png'
-            }
+        test: /\.(jpg|png|svg)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 25000
           }
-        ]
+        }
       }
     ]
   },
@@ -149,15 +140,13 @@ const configDev = {
         use: 'file-loader'
       },
       {
-        test: /\.png$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              mimetype: 'image/png'
-            }
+        test: /\.(jpg|png|svg)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 25000
           }
-        ]
+        }
       }
     ]
   },

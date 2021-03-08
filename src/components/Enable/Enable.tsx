@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
-import { generateMnemonicAndSeed, getAccountFromSeed } from '@static/seedOperations'
-import { Account } from '@solana/web3.js'
-import useStyles from './style'
 import FilledButton from '@components/FilledButton/FilledButton'
-import MultilineText from '@components/MultilineText/MultilineText'
+import useStyles from './style'
 
 interface IProps {
   website: string
-  onConfirm: () => void
-  onReject: () => void
+  onConfirm: () => void | Promise<void>
+  onReject: () => void | Promise<void>
 }
 
 export const Enable: React.FC<IProps> = ({ website, onConfirm, onReject }) => {

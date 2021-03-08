@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Grid, Typography, IconButton, Drawer } from '@material-ui/core'
-import useStyles from './style'
 import FilledButton from '@components/FilledButton/FilledButton'
 import { networkToName, SolanaNetworks } from '@static/index'
 import LanguageIcon from '@material-ui/icons/Language'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ListEntry from '@components/ListEntry/ListEntry'
+import useStyles from './style'
 interface IProps {
   onNetworkChange: (network: SolanaNetworks) => void
   network: SolanaNetworks

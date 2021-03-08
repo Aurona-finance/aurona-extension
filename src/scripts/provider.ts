@@ -36,7 +36,7 @@ export default class Provider {
       const id = Math.random().toString()
       this.eventsMap.set(id, { resolve: resolve, reject })
       window.postMessage(
-        { type: ACTION_TYPE.ENABLE, id, data: { host: window.location.host } },
+        { type: ACTION_TYPE.ENABLE, id, data: { host: window.location.origin } },
         '*'
       )
     })

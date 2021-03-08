@@ -8,30 +8,25 @@ import { address, balance } from '@selectors/solanaWallet'
 import { getSolanaWallet } from '@web3/solana/wallet'
 import { Transaction } from '@solana/web3.js'
 import Header from '@containers/Header/Header'
+import MainComponent from '@components/Main/Main'
 
 export const Main: React.FC = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const userAddress = useSelector(address)
   const userBalance = useSelector(balance)
-  React.useEffect(() => {
-    dispatch(solanaConnectionActions.initSolanaConnection())
-  }, [dispatch])
+  // React.useEffect(() => {
+  //   dispatch(solanaConnectionActions.initSolanaConnection())
+  // }, [dispatch])
   return (
-    <Grid container direction='column' justify='center'>
+    <>
       <Header />
-      <Grid item>
-        <Typography variant='body1'>{'Your address'}</Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant='body1' color='primary'>{`${userAddress}`}</Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant='body1'>{`Your SOL balance ${
-          userBalance.toNumber() / 1e9
-        }`}</Typography>
-      </Grid>
-    </Grid>
+      <MainComponent
+        address={userAddress}
+        balance={(userBalance.toNumber() / 1e9).toString()}
+        onSend={() => {}}
+      />
+    </>
   )
 }
 export default Main

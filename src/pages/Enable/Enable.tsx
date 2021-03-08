@@ -1,13 +1,16 @@
 import React from 'react'
-import useStyles from './style'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Typography } from '@material-ui/core'
 import { ACTION_TYPE, SolanaNetworks } from '@static/index'
 import { address } from '@selectors/solanaWallet'
 import { IData } from '../Root/Root'
-import CommonButton from '@components/CommonButton/CommonButton'
+import Header from '@components/Header/Header'
+import EnableComponent from '@components/Enable/Enable'
 import { getSolanaWallet } from '@web3/solana/wallet'
 import { getDataExtensionStorage } from '@static/utils'
+import { actions } from '@reducers/solanaConnection'
+import { network } from '@selectors/solanaConnection'
+import useStyles from './style'
 
 interface IEnable {
   data: IData
@@ -17,6 +20,8 @@ export const Enable: React.FC<IEnable> = ({ data }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const userAddress = useSelector(address)
+  const currentNetwork = useSelector(network)
+  console.log(data)
   // Hook auto enable
   // React.useEffect(() => {
   //   if (data.type === ACTION_TYPE.ENABLE && !!userAddress) {
@@ -29,49 +34,39 @@ export const Enable: React.FC<IEnable> = ({ data }) => {
   //   }
   // }, [dispatch, userAddress])
   return (
-    <Grid
-      container
-      className={classes.root}
-      justify='center'
-      alignItems='center'
-      direction='column'>
-      <Grid item>
-        <Typography variant='h3'> Enable Extension</Typography>
-      </Grid>
-      <Grid item style={{ marginTop: 20, height: 200 }}>
-        <Grid container>
-          <Grid item>
-            <CommonButton
-              name='Confirm'
-              onClick={async () => {
-                const wallet = await getSolanaWallet()
-                const network = await getDataExtensionStorage('network')
-                chrome.runtime.sendMessage({
-                  ...data,
-                  data: 'enabled',
-                  userAddress: wallet.publicKey.toString(),
-                  network: network || SolanaNetworks.DEV,
-                  type: ACTION_TYPE.ENABLE_DONE
-                })
-                window.close()
-              }}></CommonButton>
-          </Grid>
-          <Grid item style={{ marginLeft: 20 }}>
-            <CommonButton
-              name='Reject'
-              onClick={async () => {
-                chrome.runtime.sendMessage({
-                  ...data,
-                  data: null,
-                  userAddress: userAddress,
-                  type: ACTION_TYPE.ENABLE_DONE
-                })
-                window.close()
-              }}></CommonButton>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+    <>
+      <Header
+        network={currentNetwork}
+        disableActions
+        onNetworkChange={(network: SolanaNetworks) => {
+          if (network !== currentNetwork) {
+            dispatch(actions.changeNetwork(network))
+          }
+        }}></Header>
+      <EnableComponent
+        website={data.data.host}
+        onConfirm={async () => {
+          const wallet = await getSolanaWallet()
+          const network = await getDataExtensionStorage('network')
+          chrome.runtime.sendMessage({
+            ...data,
+            data: 'enabled',
+            userAddress: wallet.publicKey.toString(),
+            network: network || SolanaNetworks.DEV,
+            type: ACTION_TYPE.ENABLE_DONE
+          })
+          window.close()
+        }}
+        onReject={async () => {
+          chrome.runtime.sendMessage({
+            ...data,
+            data: null,
+            userAddress: userAddress,
+            type: ACTION_TYPE.ENABLE_DONE
+          })
+          window.close()
+        }}></EnableComponent>
+    </>
   )
 }
 export default Enable
