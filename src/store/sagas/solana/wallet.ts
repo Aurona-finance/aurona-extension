@@ -6,7 +6,8 @@ import {
   select,
   takeEvery,
   spawn,
-  all
+  all,
+  takeLatest
 } from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
@@ -115,6 +116,7 @@ export function* fetchTokensAccounts(): Generator {
   )
   for (const account of tokensAccounts.value) {
     const info: IparsedTokenInfo = account.account.data.parsed.info
+    console.log(account.pubkey.toString())
     yield* put(
       actions.addTokenAccount({
         programId: new PublicKey(info.mint),
@@ -189,9 +191,6 @@ export function* init(): Generator {
   )
   const wallet = yield* call(getWallet)
   const balance = yield* call(getBalance, wallet.publicKey)
-  // yield* call(fetchTokensAccounts)
-  // const store = yield* select(address)
-  // console.log(store)
   yield* put(actions.setAddress(wallet.publicKey.toString()))
   yield* put(actions.setBalance(new BN(balance)))
   yield* put(actions.setStatus(Status.Initalized))
@@ -202,7 +201,6 @@ export function* init(): Generator {
     })
   )
   yield* call(fetchTokensAccounts)
-  // yield* call(handleAirdrop)
 }
 
 export function* handleCreateAccount(
@@ -215,7 +213,6 @@ export function* handleCreateAccount(
         message: ''
       })
     )
-    console.log(action.payload.toString())
     yield* call(createAccount, action.payload)
     yield* put(uiActions.setUiPosition(UI_POSITION.MAIN))
     yield* put(
@@ -245,7 +242,10 @@ export function* createAccountHandler(): Generator {
   yield takeLeading(actions.createAccount, handleCreateAccount)
 }
 export function* handleInitWallet(): Generator {
-  yield takeLeading(actions.initWallet, init)
+  yield takeLatest(actions.initWallet, init)
+}
+export function* handleRescanToken(): Generator {
+  yield takeLatest(actions.rescanTokens, fetchTokensAccounts)
 }
 export function* walletSaga(): Generator {
   yield all([transactionsSaga, aridropSaga, handleInitWallet, createAccountHandler].map(spawn))

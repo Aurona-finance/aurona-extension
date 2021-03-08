@@ -74,7 +74,7 @@ export const Root: React.FC = () => {
           overflow: 'scroll'
         }}>
         {initialized === Status.Uninitialized && <Initialize />}
-        {data !== undefined && initialized === Status.Initalized && dataToComponent(data)}
+        {data !== undefined && initialized !== Status.Uninitialized && dataToComponent(data)}
         <GlobalLoader></GlobalLoader>
       </div>
     </Grid>

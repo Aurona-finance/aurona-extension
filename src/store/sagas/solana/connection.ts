@@ -55,28 +55,20 @@ export function* handleNetworkChange(
       message: `Loading ${networkToName(action.payload)} wallet.`
     })
   )
-  yield* put(solanaWalletActions.resetState())
-  yield* put(solanaWalletActions.setStatus(Status.Init))
-  // yield* put(solanaWalletActions.resetState())
   yield* call(setDataExtensionStorage, 'network', action.payload)
   chrome.runtime.sendMessage({
     data: action.payload,
     type: ACTION_TYPE.NETWORK_CHANGE
   })
-  yield* call(init)
+  yield* put(solanaWalletActions.resetState())
+  yield* put(solanaWalletActions.setStatus(Status.Init))
+
   yield* put(
     uiActions.setLoader({
       open: false,
       message: ''
     })
   )
-  // yield* put(
-  //   snackbarsActions.add({
-  //     message: `You are on ${networkToName(action.payload)} network.`,
-  //     variant: 'info',
-  //     persist: false
-  //   })
-  // )
 }
 
 export function* networkChangeSaga(): Generator {
