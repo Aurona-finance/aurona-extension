@@ -67,6 +67,14 @@ export const storeAccount = async (key: string, acc: Account, password: string) 
   const encryptedData = encrypt(sk, password)
   await setDataExtensionStorage(key, encryptedData)
 }
+export const storeSeed = async (seed: string, password: string) => {
+  const encryptedData = encrypt(seed, password)
+  await setDataExtensionStorage('coldSeed', encryptedData)
+}
+export const retrieveSeed = async (password: string) => {
+  const data = (await getDataExtensionStorage('coldSeed')) as IEncryptedKey
+  return decrypt(data, password)
+}
 export const retrieveAccount = async (key: string, password: string): Promise<Account> => {
   const data = (await getDataExtensionStorage(key)) as IEncryptedKey
   const sk = decrypt(data, password)

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, Typography } from '@material-ui/core'
-import { generateMnemonicAndSeed, getAccountFromSeed } from '@static/seedOperations'
-import { Account } from '@solana/web3.js'
+import { generateMnemonicAndSeed } from '@static/seedOperations'
 import useStyles from './style'
 import FilledButton from '@components/FilledButton/FilledButton'
 import MultilineText from '@components/MultilineText/MultilineText'
 
 interface IProps {
-  onClick: (acc: Account) => void
+  onClick: (acc: string) => void
 }
 
 export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
@@ -59,8 +58,7 @@ export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
             <FilledButton
               name='Export SEED'
               onClick={() => {
-                const acc = getAccountFromSeed(seed.seed)
-                onClick(acc)
+                onClick(seed.seed)
               }}
             />
           </Grid>
@@ -68,8 +66,7 @@ export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
             <FilledButton
               name='Continue'
               onClick={() => {
-                const acc = getAccountFromSeed(seed.seed)
-                onClick(acc)
+                onClick(seed.seed)
               }}
             />
           </Grid>

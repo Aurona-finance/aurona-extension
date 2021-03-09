@@ -3,7 +3,7 @@ import useStyles from './style'
 
 import SelectCreateAccount from '@components/SelectCreateAccount/SelectCreateAccount'
 import { Account } from '@solana/web3.js'
-import { getDataExtensionStorage, storeAccount } from '@static/utils'
+import { getDataExtensionStorage, retrieveSeed, storeAccount, storeSeed } from '@static/utils'
 import { actions, Status } from '@reducers/solanaWallet'
 import { useDispatch } from 'react-redux'
 import CreateAccount from '@components/CreateAccount/CreateAccount'
@@ -49,7 +49,14 @@ export const Create: React.FC = () => {
       case CreateSteps.CreateNew:
         return (
           <CreateAccount
-            onClick={async (acc: Account) => {
+            onClick={async (seed: string) => {
+              const acc = getAccountFromSeed(seed)
+              // We store encypted seed in case of generating additional accounts
+              await storeSeed(seed, password)
+              // const seed2 = await retrieveSeed(password)
+              // const acc2 = getAccountFromSeed(seed2)
+              // console.log(acc2.secretKey.toString())
+              // console.log(acc.secretKey.toString())
               const nonce = (await getDataExtensionStorage('nonce')) as string
               await storeAccount('coldAccount', acc, password)
               await storeAccount('hotAccount', acc, nonce)
@@ -63,6 +70,7 @@ export const Create: React.FC = () => {
             onClick={async (mnemonic: string) => {
               const seed = await mnemonicToSeed(mnemonic)
               const acc = getAccountFromSeed(seed)
+              await storeSeed(seed, password)
               const nonce = (await getDataExtensionStorage('nonce')) as string
               await storeAccount('coldAccount', acc, password)
               await storeAccount('hotAccount', acc, nonce)
