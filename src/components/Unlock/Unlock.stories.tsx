@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Unlock from './Unlock'
 import { withKnobs } from '@storybook/addon-knobs'
-import { withBackground } from '../../../.storybook/decorators'
+import { withBackground } from '@sb/decorators'
 
 storiesOf('Pages/Unlock', module)
   .addDecorator(withKnobs)

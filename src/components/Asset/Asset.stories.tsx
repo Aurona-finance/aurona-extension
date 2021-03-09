@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Asset from './Asset'
 import { withKnobs } from '@storybook/addon-knobs'
-import { withBackground } from '../../../.storybook/decorators'
+import { withBackground } from '@sb/decorators'
 import BN from 'bn.js'
 
 storiesOf('Components/Asset', module)

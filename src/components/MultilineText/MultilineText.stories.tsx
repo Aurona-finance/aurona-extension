@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import MultilineText from './MultilineText'
 import { withKnobs } from '@storybook/addon-knobs'
-import { withBackground } from '../../../.storybook/decorators'
+import { withBackground } from '@sb/decorators'
 
 storiesOf('inputs/MultilineText', module)
   .addDecorator(withKnobs)

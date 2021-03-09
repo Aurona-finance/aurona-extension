@@ -22,6 +22,7 @@ module.exports = {
   webpackFinal: config => {
     console.log(config.node)
     Object.assign(config.resolve.alias, {
+      '@sb': resolve('.storybook'),
       '@static': resolve('src/static'),
       '@components': resolve('src/components'),
       '@containers': resolve('src/containers'),

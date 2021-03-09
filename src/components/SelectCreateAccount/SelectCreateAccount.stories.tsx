@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import SelectCreateAccount from './SelectCreateAccount'
 import { withKnobs } from '@storybook/addon-knobs'
-import { withBackground } from '../../../.storybook/decorators'
+import { withBackground } from '@sb/decorators'
 
 storiesOf('Pages/SelectCreateAccount', module)
   .addDecorator(withKnobs)

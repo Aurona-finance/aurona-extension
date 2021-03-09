@@ -65,6 +65,7 @@ const config = {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      '@sb': resolve('.storybook'),
       '@static': resolve('src/static'),
       '@components': resolve('src/components'),
       '@containers': resolve('src/containers'),
@@ -161,6 +162,7 @@ const configDev = {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      '@sb': resolve('.storybook'),
       '@static': resolve('src/static'),
       '@components': resolve('src/components'),
       '@containers': resolve('src/containers'),
