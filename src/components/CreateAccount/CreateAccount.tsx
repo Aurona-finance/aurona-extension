@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import { generateMnemonicAndSeed } from '@static/seedOperations'
-import useStyles from './style'
 import FilledButton from '@components/FilledButton/FilledButton'
 import MultilineText from '@components/MultilineText/MultilineText'
-
+import { saveAs } from 'file-saver'
+import useStyles from './style'
 interface IProps {
   onClick: (acc: string) => void
 }
@@ -56,9 +56,12 @@ export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
         <Grid container justify='space-between'>
           <Grid item>
             <FilledButton
-              name='Export SEED'
+              name='Export JSON'
               onClick={() => {
-                onClick(seed.seed)
+                const fileToSave = new Blob([JSON.stringify(seed.mnemonic)], {
+                  type: 'application/json'
+                })
+                saveAs(fileToSave, 'AuronaExtensionMnemonic')
               }}
             />
           </Grid>
