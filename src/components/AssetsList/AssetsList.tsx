@@ -49,7 +49,7 @@ export const AssetsList: React.FC<IProps> = ({
       </Grid>
       {tokens?.map(tokenAccount => {
         return (
-          <>
+          <span key={tokenAccount.programId.toString()}>
             <Grid item>
               <Asset
                 balance={printBN(tokenAccount.balance, tokenAccount.decimals)}
@@ -60,7 +60,7 @@ export const AssetsList: React.FC<IProps> = ({
               />
             </Grid>
             <Divider />
-          </>
+          </span>
         )
       })}
       {loading && (

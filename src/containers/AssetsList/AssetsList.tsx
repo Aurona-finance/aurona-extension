@@ -12,7 +12,9 @@ export const AssetsList: React.FC = () => {
   const loading = useSelector(loadingTokens)
   return (
     <AssetsListComponent
-      onTokenClick={() => {}}
+      onTokenClick={tokenAddress => {
+        dispatch(actions.openSendToken(tokenAddress))
+      }}
       tokens={tokens}
       loading={loading}
       onAddAccount={() => {

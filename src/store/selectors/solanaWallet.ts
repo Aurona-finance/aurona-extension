@@ -66,6 +66,23 @@ export const accountsWithSol = createSelector(
     return accs
   }
 )
+
+export const tokenAccount = (tokenAddress: PublicKey) =>
+  createSelector(accounts, address, balance, (tokensAccounts, solAddress, solBalance) => {
+    if (tokensAccounts[tokenAddress.toString()]) {
+      return tokensAccounts[tokenAddress.toString()][0]
+    } else {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      return {
+        programId: DEFAULT_PUBLICKEY,
+        address: new PublicKey(solAddress),
+        balance: solBalance,
+        decimals: 9,
+        ticker: 'SOL'
+      } as ITokenAccount
+    }
+  })
+
 export const solanaWalletSelectors = {
   address,
   balance,

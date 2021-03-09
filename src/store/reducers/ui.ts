@@ -1,4 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PublicKey } from '@solana/web3.js'
+import { DEFAULT_PUBLICKEY } from '@static/index'
+import BN from 'bn.js'
 import { PayloadType } from './types'
 
 export enum UI_POSITION {
@@ -10,16 +13,23 @@ export interface Loader {
   open: boolean
   message?: string
 }
+export interface ISendToken {
+  tokenAddress: PublicKey
+  recipient: PublicKey
+  amount: BN
+}
 export interface IUIStore {
   loader: Loader
   position: UI_POSITION
   loadingTokens: boolean
+  sendToken: ISendToken
 }
 
 export const defaultState: IUIStore = {
   loader: { open: false, message: '' },
   position: UI_POSITION.MAIN,
-  loadingTokens: true
+  loadingTokens: true,
+  sendToken: { amount: new BN(0), recipient: DEFAULT_PUBLICKEY, tokenAddress: DEFAULT_PUBLICKEY }
 }
 export const uiSliceName = 'ui'
 const uiSlice = createSlice({
@@ -36,6 +46,16 @@ const uiSlice = createSlice({
     },
     setLoadingToken(state, action: PayloadAction<boolean>) {
       state.loadingTokens = action.payload
+      return state
+    },
+    openSendToken(state, action: PayloadAction<PublicKey>) {
+      state.position = UI_POSITION.SEND
+      state.sendToken.tokenAddress = action.payload
+      return state
+    },
+    sendToken(state, action: PayloadAction<Omit<ISendToken, 'tokenAddress'>>) {
+      state.sendToken.amount = action.payload.amount
+      state.sendToken.recipient = action.payload.recipient
       return state
     }
   }

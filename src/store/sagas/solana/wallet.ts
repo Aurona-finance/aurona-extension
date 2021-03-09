@@ -154,17 +154,7 @@ export function* handleAirdrop(): Generator {
 //   const balance = yield* call(, pubKey)
 //   return balance
 // }
-export function* sendToken(
-  from: PublicKey,
-  target: PublicKey,
-  amount: BN,
-  tokenAddress: PublicKey
-): SagaGenerator<string> {
-  const token = yield* call(getToken, tokenAddress)
-  const wallet = yield* call(getWallet)
-  const signature = yield* call([token, token.transfer], from, target, wallet, [], tou64(amount))
-  return signature
-}
+
 export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)

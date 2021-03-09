@@ -2,12 +2,12 @@ import React from 'react'
 import useStyles from './style'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions as walletActions } from '@reducers/solanaWallet'
-import { accountsWithSol, address, balance } from '@selectors/solanaWallet'
 import { position } from '@selectors/ui'
 import Header from '@containers/Header/Header'
 import MainContainer from '@containers/Main/Main'
 import AssetsListContainer from '@containers/AssetsList/AssetsList'
 import AddAccountContainer from '@containers/AddAccount/AddAccount'
+import SendToken from '@containers/SendToken/SendToken'
 import { UI_POSITION } from '@reducers/ui'
 
 export const Main: React.FC = () => {
@@ -30,6 +30,12 @@ export const Main: React.FC = () => {
         return (
           <>
             <AddAccountContainer />
+          </>
+        )
+      case UI_POSITION.SEND:
+        return (
+          <>
+            <SendToken />
           </>
         )
       default:
