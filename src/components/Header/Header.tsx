@@ -78,6 +78,7 @@ export const SelectCreateAccount: React.FC<IProps> = ({
           {Object.entries(SolanaNetworks).map(([k, v]) => {
             return (
               <Grid
+                key={v}
                 item
                 className={classes.drawerEntry}
                 onClick={() => {
