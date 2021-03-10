@@ -4,6 +4,7 @@ import { Grid, Typography } from '@material-ui/core'
 import { mnemonicToSeed } from '@static/seedOperations'
 import MultilineText from '@components/MultilineText/MultilineText'
 import FilledButton from '@components/FilledButton/FilledButton'
+import LogoHorizontal from '@components/LogoHorizontal/LogoHorizontal'
 interface IProps {
   onClick: (seed: string) => void
 }
@@ -17,7 +18,10 @@ export const ImportSeed: React.FC<IProps> = ({ onClick }) => {
       alignItems='center'
       justify='center'
       className={classes.root}>
-      <Grid item style={{ marginTop: 100 }}>
+      <Grid style={{ marginTop: 40 }}>
+        <LogoHorizontal />
+      </Grid>
+      <Grid item style={{ marginTop: 50 }}>
         <Typography variant='body2' className={classes.welcome}>
           Welcome
         </Typography>

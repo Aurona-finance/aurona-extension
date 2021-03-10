@@ -3,6 +3,7 @@ import { Grid, Typography } from '@material-ui/core'
 import useStyles from './style'
 import PasswordInput from '@components/PasswordInput/PasswordInput'
 import FilledButton from '@components/FilledButton/FilledButton'
+import LogoHorizontal from '@components/LogoHorizontal/LogoHorizontal'
 interface IProps {
   onClick: (password: string) => void
 }
@@ -16,7 +17,10 @@ export const Unlock: React.FC<IProps> = ({ onClick }) => {
       alignItems='center'
       justify='center'
       className={classes.root}>
-      <Grid item style={{ marginTop: 150 }}>
+      <Grid style={{ marginTop: 40 }}>
+        <LogoHorizontal />
+      </Grid>
+      <Grid item style={{ marginTop: 50 }}>
         <Typography variant='body2' className={classes.welcome}>
           Welcome back
         </Typography>

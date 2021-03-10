@@ -52,7 +52,7 @@ export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
       <Grid item style={{ marginTop: 30 }}>
         <MultilineText text={seed.mnemonic} label='Your seed*'></MultilineText>
       </Grid>
-      <Grid item style={{ marginTop: 42, width: '100%' }}>
+      <Grid item style={{ marginTop: 50, width: '100%' }}>
         <Grid container justify='space-between'>
           <Grid item>
             <FilledButton

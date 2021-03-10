@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Grid, Typography, IconButton, Drawer } from '@material-ui/core'
+import { Grid, Typography, IconButton, Drawer, CardMedia } from '@material-ui/core'
 import FilledButton from '@components/FilledButton/FilledButton'
 import { networkToName, SolanaNetworks } from '@static/index'
 import LanguageIcon from '@material-ui/icons/Language'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ListEntry from '@components/ListEntry/ListEntry'
 import FlightIcon from '@material-ui/icons/Flight'
+import AuronaIcon from '@static/aurona/icon.png'
 import useStyles from './style'
 interface IProps {
   onNetworkChange: (network: SolanaNetworks) => void
@@ -28,7 +29,9 @@ export const SelectCreateAccount: React.FC<IProps> = ({
       alignItems='center'
       justify='space-between'
       className={classes.root}>
-      <Grid item className={classes.logo}></Grid>
+      <Grid item className={classes.logo}>
+        <CardMedia style={{ width: 36, height: 36 }} image={AuronaIcon} />
+      </Grid>
       <Grid item>
         <Grid container>
           {network !== SolanaNetworks.MAIN && !disableActions && (

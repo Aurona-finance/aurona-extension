@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import useStyles from './style'
 import FilledButton from '@components/FilledButton/FilledButton'
+import LogoHorizontal from '@components/LogoHorizontal/LogoHorizontal'
 interface IProps {
   onFromSeed: () => void
   onNew: () => void
@@ -15,7 +16,10 @@ export const SelectCreateAccount: React.FC<IProps> = ({ onFromSeed, onNew }) => 
       alignItems='center'
       justify='center'
       className={classes.root}>
-      <Grid item style={{ marginTop: 150 }}>
+      <Grid style={{ marginTop: 40 }}>
+        <LogoHorizontal />
+      </Grid>
+      <Grid item style={{ marginTop: 50 }}>
         <Typography variant='body2' className={classes.welcome}>
           Welcome
         </Typography>

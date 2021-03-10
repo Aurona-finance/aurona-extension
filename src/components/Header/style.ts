@@ -10,9 +10,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: ' 0px 0px 15px 15px'
   },
   logo: {
-    height: 30,
-    width: 30,
-    backgroundColor: colors.gray['#747474']
+    height: 36,
+    width: 36
+    // backgroundColor: colors.gray['#747474']
   },
   button: {
     borderRadius: 5,

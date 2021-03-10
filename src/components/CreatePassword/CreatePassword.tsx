@@ -3,6 +3,7 @@ import { Grid, Typography } from '@material-ui/core'
 import useStyles from './style'
 import PasswordInput from '@components/PasswordInput/PasswordInput'
 import FilledButton from '@components/FilledButton/FilledButton'
+import LogoHorizontal from '@components/LogoHorizontal/LogoHorizontal'
 interface IProps {
   onClick: () => void
   setPassword: (password: string) => void
@@ -18,7 +19,10 @@ export const CreatePassword: React.FC<IProps> = ({ onClick, password, setPasswor
       alignItems='center'
       justify='center'
       className={classes.root}>
-      <Grid item style={{ marginTop: 100 }}>
+      <Grid style={{ marginTop: 40 }}>
+        <LogoHorizontal />
+      </Grid>
+      <Grid item style={{ marginTop: 50 }}>
         <Typography variant='body2' className={classes.welcome}>
           Welcome
         </Typography>
@@ -40,7 +44,7 @@ export const CreatePassword: React.FC<IProps> = ({ onClick, password, setPasswor
           setPassword={setPasswordConfirm}
           label='Repeat password*'></PasswordInput>
       </Grid>
-      <Grid item style={{ marginTop: 30 }}>
+      <Grid item style={{ marginTop: 50 }}>
         <FilledButton
           name='Create account'
           disabled={password.length < 2 || password !== passwordConfirm}
