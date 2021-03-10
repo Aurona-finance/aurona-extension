@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   subtext: {
-    color: colors.gray['#747474']
+    color: colors.gray['#747474'],
+    wordBreak: 'break-word'
   }
 }))
 

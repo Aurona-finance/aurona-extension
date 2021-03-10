@@ -91,26 +91,26 @@ export const transformBN = (amount: BN): string => {
 }
 export const printBN = (amount: BN, decimals: number): string => {
   const balanceString = amount.toString()
-
   if (balanceString === '0') {
     return '0.0'
   }
   if (balanceString.length <= decimals) {
-    return '0.' + '0'.repeat(decimals - balanceString.length) + balanceString
-  } else {
-    return trimZeros(
-      balanceString.substring(0, balanceString.length - decimals) +
-        '.' +
-        balanceString.substring(balanceString.length - decimals)
+    return (
+      '0.' + '0'.repeat(decimals - balanceString.length) + balanceString.replace(/(\.0+|0+)$/, '')
     )
-  }
-}
-// Bad solution but i hate regex
-export const trimZeros = (amount: string) => {
-  try {
-    return parseFloat(amount).toString()
-  } catch (error) {
-    return amount
+  } else {
+    const decimalPart = balanceString
+      .substring(balanceString.length - decimals)
+      .replace(/(\.0+|0+)$/, '')
+    if (decimalPart) {
+      return (
+        balanceString.substring(0, balanceString.length - decimals) +
+        '.' +
+        balanceString.substring(balanceString.length - decimals).replace(/(\.0+|0+)$/, '')
+      )
+    } else {
+      return balanceString.substring(0, balanceString.length - decimals)
+    }
   }
 }
 export const printBNtoBN = (amount: string, decimals: number): BN => {
@@ -118,11 +118,17 @@ export const printBNtoBN = (amount: string, decimals: number): BN => {
   if (balanceString.length !== 2) {
     return new BN(balanceString[0] + '0'.repeat(decimals))
   }
-  // console.log(balanceString[1].length)
   if (balanceString[1].length <= decimals) {
     return new BN(
       balanceString[0] + balanceString[1] + '0'.repeat(decimals - balanceString[1].length)
     )
   }
   return new BN(0)
+}
+
+export const uppercaseFirstLetter = (str: string) => {
+  if (str.length === 0) {
+    return str
+  }
+  return str[0].toUpperCase() + str.slice(1)
 }

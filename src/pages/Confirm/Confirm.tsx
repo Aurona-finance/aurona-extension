@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ACTION_TYPE } from '@static/index'
 import { getSolanaWallet } from '@web3/solana/wallet'
 import { Transaction, TransactionInstruction } from '@solana/web3.js'
@@ -8,6 +8,7 @@ import { network } from '@selectors/solanaConnection'
 import { useSelector } from 'react-redux'
 import Header from '@components/Header/Header'
 import useStyles from './style'
+import { decodeTransaction, IDecodedTransaction } from '@static/transactionDecoder'
 
 interface IEnable {
   data: IData
@@ -16,18 +17,37 @@ interface IEnable {
 export const Confirm: React.FC<IEnable> = ({ data }) => {
   const classes = useStyles()
   const currentNetwork = useSelector(network)
+  const [instructions, setInstructions] = useState<IDecodedTransaction[]>([])
   // console.log(Transaction.from(JSON.parse(data.data.transaction).data))
-  let instructions: TransactionInstruction[]
-  if (data.data.transaction) {
-    instructions = Transaction.from(JSON.parse(data.data.transaction).data).instructions
-  } else {
-    const transactions = JSON.parse(data.data.transactions).map((tx: any) => {
-      return Transaction.from(tx.data)
-    }) as Transaction[]
-    instructions = transactions.reduce((acc, ix) => {
-      return acc.concat(ix.instructions)
-    }, [] as TransactionInstruction[])
-  }
+  useEffect(() => {
+    const parseInstructions = async () => {
+      if (data.data.transaction) {
+        const tx = Transaction.from(JSON.parse(data.data.transaction).data).instructions
+        const decoded = await Promise.all(
+          tx.map(ix => {
+            return decodeTransaction(ix)
+          })
+        )
+        setInstructions(decoded)
+      } else {
+        const txs = JSON.parse(data.data.transactions).map((tx: any) => {
+          return Transaction.from(tx.data)
+        }) as Transaction[]
+        const ixs = txs.reduce((acc, ix) => {
+          return acc.concat(ix.instructions)
+        }, [] as TransactionInstruction[])
+        const decoded = await Promise.all(
+          ixs.map(ix => {
+            return decodeTransaction(ix)
+          })
+        )
+        setInstructions(decoded)
+      }
+    }
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    parseInstructions()
+  }, [])
+
   return (
     <>
       <Header network={currentNetwork} disableActions onNetworkChange={() => {}}></Header>
@@ -71,7 +91,7 @@ export const Confirm: React.FC<IEnable> = ({ data }) => {
           })
           window.close()
         }}
-        transactions={instructions.map(ix => ix.programId.toString())}
+        transactions={instructions}
         website={data.data.host}></SignTransaction>
     </>
   )

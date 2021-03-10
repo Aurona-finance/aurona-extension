@@ -4,10 +4,11 @@ import useStyles from './style'
 import FilledButton from '@components/FilledButton/FilledButton'
 import TransactionEntry from '@components/TransactionEntry/TransactionEntry'
 import Divider from '@components/Divider/Divider'
+import { IDecodedTransaction } from '@static/transactionDecoder'
 
 interface IProps {
   website: string
-  transactions: string[]
+  transactions: IDecodedTransaction[]
   onConfirm: () => void
   onReject: () => void
 }
@@ -53,14 +54,14 @@ export const SignTransaction: React.FC<IProps> = ({
         </Grid>
       </Grid>
       <Grid item style={{ marginTop: 30, width: '100%' }}>
-        {transactions.map((transaction, index) => {
+        {transactions.map((transaction: IDecodedTransaction, index) => {
           return (
             <>
               <Divider></Divider>
               <Grid item style={{ marginTop: 16, marginBottom: 10 }}>
                 <TransactionEntry
-                  label={`Transaction #${index + 1}`}
-                  text={transaction}></TransactionEntry>
+                  label={`${transaction.operation} #${index + 1}`}
+                  text={transaction.text}></TransactionEntry>
               </Grid>
             </>
           )

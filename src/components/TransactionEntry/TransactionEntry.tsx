@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
 
 import useStyles from './style'
+import { uppercaseFirstLetter } from '@static/utils'
 interface IProps {
   text: string
   label: string
@@ -17,7 +18,7 @@ export const TransactionEntry: React.FC<IProps> = ({ text, label }) => {
         <Grid container>
           <Grid item>
             <Typography variant='h3' className={classes.label}>
-              {label}
+              {uppercaseFirstLetter(label)}
             </Typography>
           </Grid>
           <Grid item xs={12}>

@@ -5,6 +5,8 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { withBackground } from '@sb/decorators'
 import Header from '@components/Header/Header'
 import { SolanaNetworks } from '@static/index'
+import BN from 'bn.js'
+import { Account } from '@solana/web3.js'
 
 storiesOf('Pages/SignTransaction', module)
   .addDecorator(withKnobs)
@@ -29,13 +31,21 @@ storiesOf('Pages/SignTransaction', module)
           }}
           website='synthetify.io'
           transactions={[
-            '121212121212',
-            'asdasdasdasdasd',
-            'asdasdasdasdasd',
-            'asdasdasdasdasd',
-            'asdasdasdasdasd',
-            'asdasdasdasdasd',
-            'asdasdasdasdasd'
+            {
+              amount: new BN(0),
+              operation: 'Transfer',
+              text: `Transfer ${10 * 1e9} SOL to ${new Account().publicKey.toString()}`
+            },
+            {
+              amount: new BN(0),
+              operation: 'Transfer',
+              text: `Transfer ${10 * 1e9} SOL to ${new Account().publicKey.toString()}`
+            },
+            {
+              amount: new BN(0),
+              operation: 'Transfer',
+              text: `Transfer ${10 * 1e9} SOL to ${new Account().publicKey.toString()}`
+            }
           ]}
         />
       </div>

@@ -132,7 +132,6 @@ export function* fetchTokensAccounts(): Generator {
 export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
-  console.log(TOKEN_PROGRAM_ID.toString())
   const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, wallet)
   return token
 }
