@@ -1,5 +1,5 @@
 import { Account } from '@solana/web3.js'
-import { retrieveAccount, getDataExtensionStorage, storeAccount } from '@static/utils'
+import { getDataExtensionStorage, storeAccount, retrieveCurrentAccount } from '@static/utils'
 import { SolanaNetworks } from '@static/index'
 
 let _wallet: Account
@@ -16,15 +16,12 @@ const getSolanaWallet = async (): Promise<Account> => {
   return _wallet
 }
 export const getHotAccount = async (): Promise<Account> => {
-  const nonce = (await getDataExtensionStorage('nonce')) as string
-  const acc = await retrieveAccount('hotAccount', nonce)
-  _wallet = acc
-  return acc
-}
-export const getColdAccount = async (password: string): Promise<Account> => {
-  const acc = await retrieveAccount('coldAccount', password)
-  const nonce = (await getDataExtensionStorage('nonce')) as string
-  await storeAccount('hotAccount', acc, nonce)
+  const current = await retrieveCurrentAccount()
+  console.log(current)
+  if (current.type === 'ledger') {
+    throw Error('Current wallet is hardware')
+  }
+  const acc = current.account
   _wallet = acc
   return acc
 }

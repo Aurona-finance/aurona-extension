@@ -7,7 +7,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '0px 30px',
     paddingRight: 15,
     backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: ' 0px 0px 15px 15px'
+    borderRadius: ' 0px 0px 15px 15px',
+    position: 'relative'
+  },
+  menu: {
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    height: 400,
+    width: 300,
+    position: 'absolute',
+    top: 70,
+    zIndex: 100
   },
   logo: {
     height: 36,

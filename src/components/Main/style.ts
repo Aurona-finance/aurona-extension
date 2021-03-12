@@ -35,8 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '12px',
     lineHeight: '14px',
     transition: 'all 500ms ease',
-    maxWidth: 80,
-    minWidth: 80,
+    maxWidth: 85,
+    minWidth: 85,
+    height: 25,
     padding: '4px 6px',
     color: colors.white.main
     // border: '1px solid #FFFFFF'

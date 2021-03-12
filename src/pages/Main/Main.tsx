@@ -9,6 +9,7 @@ import AssetsListContainer from '@containers/AssetsList/AssetsList'
 import AddAccountContainer from '@containers/AddAccount/AddAccount'
 import SendToken from '@containers/SendToken/SendToken'
 import { UI_POSITION } from '@reducers/ui'
+import { getStoredWallets } from '@static/utils'
 
 export const Main: React.FC = () => {
   const classes = useStyles()
@@ -16,6 +17,15 @@ export const Main: React.FC = () => {
   const uiPosition = useSelector(position)
   React.useEffect(() => {
     dispatch(walletActions.initWallet())
+  }, [dispatch])
+  React.useEffect(() => {
+    const getAllWallets = async () => {
+      const storedAddresses = await getStoredWallets()
+      console.log(storedAddresses)
+      dispatch(walletActions.setWallets(Object.values(storedAddresses)))
+    }
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    getAllWallets()
   }, [dispatch])
   const positionToComponent = (position: UI_POSITION) => {
     switch (position) {

@@ -8,12 +8,13 @@ import { keySelectors, AnyProps } from './helpers'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
-export const { address, balance, accounts, status, transactions } = keySelectors(store, [
+export const { address, balance, accounts, status, transactions, wallets } = keySelectors(store, [
   'address',
   'balance',
   'accounts',
   'status',
-  'transactions'
+  'transactions',
+  'wallets'
 ])
 
 export const tokensAggregated = createSelector(accounts, tokensAccounts => {
@@ -90,6 +91,7 @@ export const solanaWalletSelectors = {
   status,
   tokensAggregated,
   transactions,
-  accountsWithSol
+  accountsWithSol,
+  wallets
 }
 export default solanaWalletSelectors

@@ -2,14 +2,23 @@ import React, { useEffect, useState } from 'react'
 import useStyles from './style'
 
 import SelectCreateAccount from '@components/SelectCreateAccount/SelectCreateAccount'
-import { Account } from '@solana/web3.js'
-import { getDataExtensionStorage, retrieveSeed, storeAccount, storeSeed } from '@static/utils'
+import {
+  decrypt,
+  encrypt,
+  getNonce,
+  getStoredWallets,
+  setDataExtensionStorage,
+  storeCurrentWallet,
+  storeHotPassword,
+  storeSeed
+} from '@static/utils'
 import { actions, Status } from '@reducers/solanaWallet'
 import { useDispatch } from 'react-redux'
 import CreateAccount from '@components/CreateAccount/CreateAccount'
 import ImportSeed from '@components/ImportSeed/ImportSeed'
 import CreatePassword from '@components/CreatePassword/CreatePassword'
 import { mnemonicToSeed, getAccountFromSeed } from '@static/seedOperations'
+import { STORAGE_KEYS } from '@static/index'
 
 enum CreateSteps {
   CreatePassword,
@@ -57,9 +66,25 @@ export const Create: React.FC = () => {
               // const acc2 = getAccountFromSeed(seed2)
               // console.log(acc2.secretKey.toString())
               // console.log(acc.secretKey.toString())
-              const nonce = (await getDataExtensionStorage('nonce')) as string
-              await storeAccount('coldAccount', acc, password)
-              await storeAccount('hotAccount', acc, nonce)
+              await storeHotPassword(password)
+              const storedAddresses = await getStoredWallets()
+              storedAddresses[acc.publicKey.toString()] = {
+                type: 'aurona',
+                publicKey: acc.publicKey.toString(),
+                key: 0,
+                // Create it just to later test on open
+                privkey: encrypt(acc.secretKey.toString(), password)
+              }
+              await setDataExtensionStorage(
+                STORAGE_KEYS.ALL_WALLETS,
+                JSON.stringify(storedAddresses)
+              )
+              await storeCurrentWallet({
+                type: 'aurona',
+                publicKey: acc.publicKey.toString(),
+                key: 0,
+                privkey: encrypt(acc.secretKey.toString(), password)
+              })
               dispatch(actions.setStatus(Status.Initalized))
             }}
           />
@@ -71,9 +96,25 @@ export const Create: React.FC = () => {
               const seed = await mnemonicToSeed(mnemonic)
               const acc = getAccountFromSeed(seed)
               await storeSeed(seed, password)
-              const nonce = (await getDataExtensionStorage('nonce')) as string
-              await storeAccount('coldAccount', acc, password)
-              await storeAccount('hotAccount', acc, nonce)
+              await storeHotPassword(password)
+              const storedAddresses = await getStoredWallets()
+              storedAddresses[acc.publicKey.toString()] = {
+                type: 'aurona',
+                publicKey: acc.publicKey.toString(),
+                key: 0,
+                // Create it just to later test on open
+                privkey: encrypt(acc.secretKey.toString(), password)
+              }
+              await setDataExtensionStorage(
+                STORAGE_KEYS.ALL_WALLETS,
+                JSON.stringify(storedAddresses)
+              )
+              await storeCurrentWallet({
+                type: 'aurona',
+                publicKey: acc.publicKey.toString(),
+                key: 0,
+                privkey: encrypt(acc.secretKey.toString(), password)
+              })
               dispatch(actions.setStatus(Status.Initalized))
             }}
           />

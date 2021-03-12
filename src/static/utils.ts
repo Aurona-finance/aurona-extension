@@ -1,7 +1,8 @@
 import crypto from 'crypto'
-import { Account } from '@solana/web3.js'
+import { Account, PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { u64 } from '@solana/spl-token'
+import { STORAGE_KEYS } from '.'
 
 export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -32,7 +33,7 @@ export const setDataExtensionStorage = (key: string, data: any): Promise<void> =
 const algorithm = 'aes-256-ctr'
 const iv = crypto.randomBytes(16)
 
-interface IEncryptedKey {
+export interface IEncryptedKey {
   iv: string
   data: string
 }
@@ -75,10 +76,75 @@ export const retrieveSeed = async (password: string) => {
   const data = (await getDataExtensionStorage('coldSeed')) as IEncryptedKey
   return decrypt(data, password)
 }
-export const retrieveAccount = async (key: string, password: string): Promise<Account> => {
-  const data = (await getDataExtensionStorage(key)) as IEncryptedKey
-  const sk = decrypt(data, password)
-  return new Account(sk.split(',').map(item => parseInt(item)))
+export const storeHotPassword = async (password: string) => {
+  const nonce = await getNonce()
+  const encryptedData = encrypt(password, nonce)
+  await setDataExtensionStorage('password', encryptedData)
+}
+export const retrieveHotPassword = async () => {
+  const nonce = await getNonce()
+  const data = (await getDataExtensionStorage('password')) as IEncryptedKey
+  return decrypt(data, nonce)
+}
+export interface UnlockedAccount {
+  type: 'aurona'
+  publicKey: PublicKey
+  key: number
+  account: Account
+}
+export interface UnlockedLedger {
+  type: 'ledger'
+  publicKey: PublicKey
+  key: number
+}
+export const retrieveCurrentAccount = async (): Promise<UnlockedAccount | UnlockedLedger> => {
+  const data = await getCurrentWallet()
+  if (data === undefined) {
+    throw Error('No wallet initialized')
+  }
+  const password = await retrieveHotPassword()
+  const sk = decrypt(data.privkey, password)
+  // console.log(sk)
+  if (data.type === 'aurona') {
+    return {
+      type: data.type,
+      key: data.key,
+      publicKey: new PublicKey(data.publicKey),
+      account: new Account(sk.split(',').map(item => parseInt(item)))
+    }
+  } else {
+    const check = new PublicKey(sk)
+    return {
+      type: data.type,
+      key: data.key,
+      publicKey: new PublicKey(data.publicKey)
+    }
+  }
+}
+export const retrieveColdCurrentAccount = async (
+  password: string
+): Promise<UnlockedAccount | UnlockedLedger> => {
+  const data = await getCurrentWallet()
+  const wallets = await getStoredWallets()
+  if (data === undefined) {
+    throw Error('No wallet initialized')
+  }
+  const wallet = wallets[data.publicKey]
+  const sk = decrypt(wallet.privkey, password)
+  if (data.type === 'aurona') {
+    return {
+      type: data.type,
+      key: data.key,
+      publicKey: new PublicKey(data.publicKey),
+      account: new Account(sk.split(',').map(item => parseInt(item)))
+    }
+  } else {
+    return {
+      type: data.type,
+      key: data.key,
+      publicKey: new PublicKey(data.publicKey)
+    }
+  }
 }
 
 export const tou64 = (amount: BN | String) => {
@@ -131,4 +197,41 @@ export const uppercaseFirstLetter = (str: string) => {
     return str
   }
   return str[0].toUpperCase() + str.slice(1)
+}
+
+export interface IWallet {
+  type: 'ledger' | 'aurona'
+  publicKey: string
+  key: number
+  privkey: IEncryptedKey
+}
+type IStoredWallets = {
+  [key in string]: IWallet
+}
+export const getStoredWallets = async () => {
+  const storedData = await getDataExtensionStorage(STORAGE_KEYS.ALL_WALLETS)
+  let storedAddresses: IStoredWallets = {}
+  if (!storedData) {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    storedAddresses = {} as IStoredWallets
+  } else {
+    storedAddresses = JSON.parse(storedData as string) as IStoredWallets
+  }
+  return storedAddresses
+}
+export const getCurrentWallet = async (): Promise<IWallet | undefined> => {
+  const storedData = await getDataExtensionStorage(STORAGE_KEYS.SELECTED_WALLET)
+  if (!storedData) {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return undefined
+  } else {
+    return JSON.parse(storedData as string) as IWallet
+  }
+}
+
+export const storeCurrentWallet = async (wallet: IWallet) => {
+  return await setDataExtensionStorage(STORAGE_KEYS.SELECTED_WALLET, JSON.stringify(wallet))
+}
+export const getNonce = async () => {
+  return (await getDataExtensionStorage('nonce')) as string
 }

@@ -8,20 +8,35 @@ import ListEntry from '@components/ListEntry/ListEntry'
 import FlightIcon from '@material-ui/icons/Flight'
 import AuronaIcon from '@static/aurona/icon.png'
 import useStyles from './style'
+import { PublicKey } from '@solana/web3.js'
+interface IUserAccounts {
+  type: 'aurona' | 'ledger'
+  publicKey: string
+  selected: boolean
+}
 interface IProps {
   onNetworkChange: (network: SolanaNetworks) => void
   network: SolanaNetworks
+  accounts?: IUserAccounts[]
   disableActions?: boolean
   onAirdrop?: () => void
+  onNewLedgerAccount?: () => void
+  onWalletChange?: (publicKey: string) => void
+  existLedger?: boolean
 }
-export const SelectCreateAccount: React.FC<IProps> = ({
+export const Header: React.FC<IProps> = ({
   onNetworkChange,
   network,
+  accounts = [],
   disableActions = false,
-  onAirdrop = () => {}
+  existLedger = false,
+  onAirdrop = () => {},
+  onNewLedgerAccount = () => {},
+  onWalletChange = () => {}
 }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [openMenu, setOpenMenu] = useState(false)
   return (
     <Grid
       container
@@ -29,6 +44,37 @@ export const SelectCreateAccount: React.FC<IProps> = ({
       alignItems='center'
       justify='space-between'
       className={classes.root}>
+      {openMenu && (
+        <div className={classes.menu}>
+          <Grid container direction='column'>
+            <Grid item>
+              <Typography variant='body1'>Accounts</Typography>
+            </Grid>
+            {accounts.map(a => {
+              return (
+                <>
+                  <Grid item>
+                    <Typography variant='body1'>{a.type}</Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    style={{ backgroundColor: a.selected ? 'blue' : 'none' }}
+                    onClick={() => {
+                      onWalletChange(a.publicKey)
+                    }}>
+                    <Typography variant='body1'>{a.publicKey.toString()}</Typography>
+                  </Grid>
+                </>
+              )
+            })}
+            {!existLedger && (
+              <Grid item>
+                <FilledButton name='Add ledger account' onClick={onNewLedgerAccount} />
+              </Grid>
+            )}
+          </Grid>
+        </div>
+      )}
       <Grid item className={classes.logo}>
         <CardMedia style={{ width: 36, height: 36 }} image={AuronaIcon} />
       </Grid>
@@ -59,7 +105,12 @@ export const SelectCreateAccount: React.FC<IProps> = ({
               startIcon={<LanguageIcon></LanguageIcon>}></FilledButton>
           </Grid>
           <Grid item>
-            <IconButton aria-label='delete' className={classes.moreButton}>
+            <IconButton
+              aria-label='delete'
+              className={classes.moreButton}
+              onClick={() => {
+                setOpenMenu(!openMenu)
+              }}>
               <MoreVertIcon />
             </IconButton>
           </Grid>
@@ -101,4 +152,4 @@ export const SelectCreateAccount: React.FC<IProps> = ({
     </Grid>
   )
 }
-export default SelectCreateAccount
+export default Header

@@ -1,9 +1,9 @@
 {
-  "name": "Solana Extension",
-  "description": "Anchor Provider Extension",
+  "name": "Solana Extension1",
+  "description": "Anchor Provider Extension121",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "manifest_version": 2,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "icons": {
     "16": "icon16.png",
     "32": "icon32.png",

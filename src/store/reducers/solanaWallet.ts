@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PayloadType } from './types'
 import BN from 'bn.js'
 import { PublicKey } from '@solana/web3.js'
+import { IWallet } from '@static/utils'
 
 export enum Status {
   Uninitialized = 'uninitialized',
@@ -15,13 +16,6 @@ export interface ITokenAccount {
   address: PublicKey
   decimals: number
   ticker?: string
-}
-export interface ITokenData {
-  programId: string
-  mintAuthority: string | null
-  freezeAuthority: string | null
-  supply: number
-  decimals: number
 }
 export interface ITransaction {
   recipient: string
@@ -37,14 +31,18 @@ export interface ISolanaWallet {
   balance: BN
   transactions: { [key in string]: ITransaction }
   accounts: { [key in string]: ITokenAccount[] }
+  wallets: IWallet[]
+  type: 'ledger' | 'aurona'
 }
 
 export const defaultState: ISolanaWallet = {
   status: Status.Uninitialized,
+  type: 'aurona',
   address: '',
   balance: new BN(0),
   transactions: {},
-  accounts: {}
+  accounts: {},
+  wallets: []
 }
 export const solanaWalletSliceName = 'solanaWallet'
 const solanaWalletSlice = createSlice({
@@ -55,6 +53,17 @@ const solanaWalletSlice = createSlice({
       return defaultState
     },
     initWallet(state) {
+      return state
+    },
+    changeWallet(state, _action: PayloadAction<IWallet>) {
+      return state
+    },
+    setWallets(state, action: PayloadAction<IWallet[]>) {
+      state.wallets = action.payload
+      return state
+    },
+    setType(state, action: PayloadAction<'ledger' | 'aurona'>) {
+      state.type = action.payload
       return state
     },
     createAccount(state, _action: PayloadAction<PublicKey>) {

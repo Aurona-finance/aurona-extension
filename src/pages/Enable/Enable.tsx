@@ -7,7 +7,7 @@ import { IData } from '../Root/Root'
 import Header from '@components/Header/Header'
 import EnableComponent from '@components/Enable/Enable'
 import { getSolanaWallet } from '@web3/solana/wallet'
-import { getDataExtensionStorage } from '@static/utils'
+import { getDataExtensionStorage, retrieveCurrentAccount } from '@static/utils'
 import { actions } from '@reducers/solanaConnection'
 import { network } from '@selectors/solanaConnection'
 import useStyles from './style'
@@ -46,7 +46,7 @@ export const Enable: React.FC<IEnable> = ({ data }) => {
       <EnableComponent
         website={data.data.host}
         onConfirm={async () => {
-          const wallet = await getSolanaWallet()
+          const wallet = await retrieveCurrentAccount()
           const network = await getDataExtensionStorage('network')
           chrome.runtime.sendMessage({
             ...data,

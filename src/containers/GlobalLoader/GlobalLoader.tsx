@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { Backdrop, Grid, CardMedia } from '@material-ui/core'
+import { Backdrop, Grid, CardMedia, Typography } from '@material-ui/core'
 import { loader } from '@selectors/ui'
 import Loader from '@static/gif/loader.gif'
 
@@ -19,6 +19,11 @@ export const GlobalLoader: React.FC = () => {
         <Grid item>
           <CardMedia component='img' height='100%' image={Loader} title='Loading' />
         </Grid>
+        {loaderData.message && (
+          <Grid>
+            <Typography variant='h2'>{loaderData.message}</Typography>
+          </Grid>
+        )}
       </Grid>
     </Backdrop>
   )

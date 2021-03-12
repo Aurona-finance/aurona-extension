@@ -1,5 +1,11 @@
 import { PublicKey } from '@solana/web3.js'
 
+export enum STORAGE_KEYS {
+  SELECTED_WALLET = 'SELECTED_WALLET',
+  CONNECT = 'CONNECT',
+  ALL_WALLETS = 'ALL_WALLETS',
+  SEED = 'SEED'
+}
 export enum ACTION_TYPE {
   DEFAULT = 'DEFAULT',
   REQUEST_NEW = 'REQUEST_NEW',

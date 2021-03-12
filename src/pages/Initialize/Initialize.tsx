@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import useStyles from './style'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHotAccount } from '@web3/solana/wallet'
-import { getDataExtensionStorage } from '@static/utils'
+import {
+  getDataExtensionStorage,
+  getNonce,
+  getStoredWallets,
+  retrieveCurrentAccount
+} from '@static/utils'
 import Loading from '@components/Loading/Loading'
 import Create from '@containers/Create/Create'
 import Unlock from '@containers/Unlock/Unlock'
 import { actions, Status } from '@reducers/solanaWallet'
-
+import * as R from 'remeda'
 enum Steps {
   Loading,
   Creation,
@@ -21,11 +26,13 @@ export const Initialize: React.FC = () => {
   React.useEffect(() => {
     const init = async () => {
       try {
-        const coldAccount = await getDataExtensionStorage('coldAccount')
-        if (coldAccount === undefined) {
+        const wallets = await getStoredWallets()
+        // We dont have any wallets
+        if (Object.keys(wallets).length === 0) {
           setStep(Steps.Creation)
         } else {
-          const a = await getHotAccount()
+          const a = await retrieveCurrentAccount()
+          console.log(a)
           dispatch(actions.setAddress(a.publicKey.toString()))
           dispatch(actions.setStatus(Status.Initalized))
         }
