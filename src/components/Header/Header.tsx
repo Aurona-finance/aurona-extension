@@ -109,7 +109,9 @@ export const Header: React.FC<IProps> = ({
               aria-label='delete'
               className={classes.moreButton}
               onClick={() => {
-                setOpenMenu(!openMenu)
+                if (!disableActions) {
+                  setOpenMenu(!openMenu)
+                }
               }}>
               <MoreVertIcon />
             </IconButton>
