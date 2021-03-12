@@ -45,7 +45,6 @@ export const Root: React.FC = () => {
       if (_data === null || _data === undefined) {
         setIsHardware(false)
       } else {
-        // setData(_data)
         setIsHardware(true)
       }
       chrome.storage.local.set({ [STORAGE_KEYS.CONNECT]: null })
@@ -59,8 +58,8 @@ export const Root: React.FC = () => {
       } else {
         setData(_data)
       }
+      chrome.storage.local.set({ key: null })
     })
-    chrome.storage.local.set({ key: null })
   }, [])
   const dataToComponent = (data: IData) => {
     switch (data.type) {
@@ -78,51 +77,38 @@ export const Root: React.FC = () => {
     }
   }
   return (
-    <Grid
-      container
-      style={{
-        width: 360,
-        height: 600,
-        backgroundImage: `url(${bg})`,
-        overflow: 'hidden',
-        position: 'relative'
-      }}>
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          bottom: -20,
-          right: -15,
-          overflow: 'scroll'
-        }}
-        // onClick={async () => {
-        //   // chrome.tabs.create({ url: `chrome-extension://${chrome.runtime.id}/popup.html` })
-        //   const wa = new LedgerWalletProvider()
-        //   console.log(wa)
-        //   console.log(await wa.init())
-        //   console.log(wa.publicKey?.toString())
-        //   console.log(chrome.runtime.id)
-        //   // // @ts-expect-error
-        //   // let devices = await navigator.usb.getDevices()
-        //   // console.log(devices)
-        //   // console.log('connect')
-        //   // // @ts-expect-error
-        //   // console.log(navigator.usb)
-        //   // await connect()
-        // }}
-      >
-        {isHardware === false ? (
-          <>
-            {initialized === Status.Uninitialized && <Initialize />}
-            {data !== undefined && initialized !== Status.Uninitialized && dataToComponent(data)}
-          </>
-        ) : (
-          <Hardware />
-        )}
-        <GlobalLoader></GlobalLoader>
-      </div>
-    </Grid>
+    <>
+      {isHardware === false ? (
+        <>
+          {' '}
+          <Grid
+            container
+            style={{
+              width: 360,
+              height: 600,
+              backgroundImage: `url(${bg})`,
+              overflow: 'hidden',
+              position: 'relative'
+            }}>
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                bottom: -20,
+                right: -15,
+                overflow: 'scroll'
+              }}>
+              {initialized === Status.Uninitialized && <Initialize />}
+              {data !== undefined && initialized !== Status.Uninitialized && dataToComponent(data)}
+            </div>
+          </Grid>
+        </>
+      ) : (
+        <Hardware />
+      )}
+      <GlobalLoader></GlobalLoader>
+    </>
   )
 }
 export default Root
