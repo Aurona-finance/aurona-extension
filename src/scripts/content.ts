@@ -113,6 +113,12 @@ window.addEventListener(
         window.solanaProvider.triggerNetworkChange(e.data.data)
       }
     }
+    if (e.data.type === ACTION_TYPE.WALLET_CHANGE) {
+      console.log('wallet change')
+      if (window.solanaProvider.triggerAccountChange) {
+        window.solanaProvider.triggerAccountChange()
+      }
+    }
     // window.postMessage(e.data, '*')
   },
   false

@@ -17,11 +17,16 @@ import {
 export default class Provider {
   public wallet?: Wallet
   public triggerNetworkChange?: (network: string) => void | undefined
+  public triggerAccountChange?: () => void | undefined
   constructor(
     public connection: Connection,
     readonly opts: ConfirmOptions,
     readonly eventsMap: Map<string, { resolve: any; reject: any }>
-  ) {}
+  ) {
+    this.triggerAccountChange = () => {
+      location.reload()
+    }
+  }
 
   static defaultOptions(): ConfirmOptions {
     return {
@@ -48,6 +53,10 @@ export default class Provider {
 
   public onNetworkChange(callback: (network: string) => void) {
     this.triggerNetworkChange = callback
+  }
+
+  public onAccountChange(callback: () => void) {
+    this.triggerAccountChange = callback
   }
 
   async send(

@@ -37,6 +37,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       chrome.tabs.sendMessage(tab, { ...request })
     }
   }
+  if (request.type === ACTION_TYPE.WALLET_CHANGE) {
+    for (const tab of connectedTabs) {
+      chrome.tabs.sendMessage(tab, { ...request })
+    }
+  }
   if (request.type === ACTION_TYPE.REQUEST_RESOLVED || request.type === ACTION_TYPE.ENABLE_DONE) {
     const req = requestMap.get(request.id)
     if (req) {

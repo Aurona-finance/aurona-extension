@@ -7,7 +7,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (
     request.type === ACTION_TYPE.REQUEST_RESOLVED ||
     request.type === ACTION_TYPE.ENABLE_DONE ||
-    request.type === ACTION_TYPE.NETWORK_CHANGE
+    request.type === ACTION_TYPE.NETWORK_CHANGE ||
+    request.type === ACTION_TYPE.WALLET_CHANGE
   ) {
     window.postMessage(request, '*')
   }
@@ -24,7 +25,8 @@ window.addEventListener(
       ACTION_TYPE[event.data.type] &&
       event.data.type !== ACTION_TYPE.REQUEST_RESOLVED &&
       event.data.type !== ACTION_TYPE.ENABLE_DONE &&
-      event.data.type !== ACTION_TYPE.NETWORK_CHANGE
+      event.data.type !== ACTION_TYPE.NETWORK_CHANGE &&
+      event.data.type !== ACTION_TYPE.WALLET_CHANGE
     ) {
       chrome.runtime.sendMessage({
         ...event.data

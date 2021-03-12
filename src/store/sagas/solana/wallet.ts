@@ -28,7 +28,7 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 // import { createToken } from './token'
 import BN from 'bn.js'
-import { TOKEN_PROGRAM_ID } from '@static/index'
+import { ACTION_TYPE, TOKEN_PROGRAM_ID } from '@static/index'
 import {
   retrieveCurrentAccount,
   sleep,
@@ -235,6 +235,10 @@ export function* changeWalletHandler(
   yield* call(storeCurrentWallet, action.payload)
   yield* put(actions.resetState())
   yield* put(actions.setStatus(Status.Init))
+  chrome.runtime.sendMessage({
+    data: action.payload.publicKey,
+    type: ACTION_TYPE.WALLET_CHANGE
+  })
   yield* put(
     uiActions.setLoader({
       open: false,
