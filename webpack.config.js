@@ -19,8 +19,17 @@ const config = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        options: {
+          presets: [
+            '@babel/preset-env',
+            '@babel/react',
+            {
+              plugins: ['@babel/plugin-proposal-class-properties']
+            }
+          ]
+        }
       },
       {
         test: /\.css$/,
