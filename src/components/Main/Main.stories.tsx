@@ -28,6 +28,7 @@ storiesOf('Pages/Main', module)
           onNetworkChange={net => {
             setNetwork(net)
           }}
+          onAirdrop={() => {}}
           network={network}></Header>
         <Main
           onSend={() => console.log('send')}

@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 36
     // backgroundColor: colors.gray['#747474']
   },
+  logoAvatar: {
+    cursor: 'pointer'
+    // height: 20,
+    // width: 20
+    // backgroundColor: colors.gray['#747474']
+  },
   button: {
     borderRadius: 5,
     textTransform: 'none',
@@ -84,6 +90,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       backgroundColor: 'rgba(255,255,255,0.05)'
     }
+  },
+  aidropDiv: {
+    position: 'absolute',
+    top: 75,
+    right: 5
+  },
+  divider: { padding: `0px 40px`, marginTop: 15 },
+  buttonAccounts: {
+    borderRadius: 5,
+    textTransform: 'none',
+    fontWeight: 'bold',
+    fontSize: '14px',
+    transition: 'all 500ms ease',
+    minWidth: 160,
+    height: 28,
+    padding: '2px 10px',
+    color: colors.white.main
   }
 }))
 

@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   subtext: {
     textTransform: 'uppercase',
+    width: 240,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden !important',
+    textOverflow: 'ellipsis',
     color: colors.gray['#747474']
   }
 }))

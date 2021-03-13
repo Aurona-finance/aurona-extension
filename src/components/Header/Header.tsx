@@ -7,8 +7,12 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ListEntry from '@components/ListEntry/ListEntry'
 import FlightIcon from '@material-ui/icons/Flight'
 import AuronaIcon from '@static/aurona/icon.png'
+import AvatarIcon from '@static/aurona/avatar.png'
+import Divider from '@components/Divider/Divider'
+import AddIcon from '@material-ui/icons/Add'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import UsbIcon from '@material-ui/icons/Usb'
 import useStyles from './style'
-import { PublicKey } from '@solana/web3.js'
 interface IUserAccounts {
   type: 'aurona' | 'ledger'
   publicKey: string
@@ -36,7 +40,7 @@ export const Header: React.FC<IProps> = ({
 }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
-  const [openMenu, setOpenMenu] = useState(false)
+  const [openAccounts, setOpenAccounts] = useState(false)
   return (
     <Grid
       container
@@ -44,44 +48,13 @@ export const Header: React.FC<IProps> = ({
       alignItems='center'
       justify='space-between'
       className={classes.root}>
-      {openMenu && (
-        <div className={classes.menu}>
-          <Grid container direction='column'>
-            <Grid item>
-              <Typography variant='body1'>Accounts</Typography>
-            </Grid>
-            {accounts.map(a => {
-              return (
-                <>
-                  <Grid item>
-                    <Typography variant='body1'>{a.type}</Typography>
-                  </Grid>
-                  <Grid
-                    item
-                    style={{ backgroundColor: a.selected ? 'blue' : 'none' }}
-                    onClick={() => {
-                      onWalletChange(a.publicKey)
-                    }}>
-                    <Typography variant='body1'>{a.publicKey.toString()}</Typography>
-                  </Grid>
-                </>
-              )
-            })}
-            {!existLedger && (
-              <Grid item>
-                <FilledButton name='Add ledger account' onClick={onNewLedgerAccount} />
-              </Grid>
-            )}
-          </Grid>
-        </div>
-      )}
       <Grid item className={classes.logo}>
         <CardMedia style={{ width: 36, height: 36 }} image={AuronaIcon} />
       </Grid>
       <Grid item>
-        <Grid container>
+        <Grid container justify='center' alignItems='center'>
           {network !== SolanaNetworks.MAIN && !disableActions && (
-            <Grid item>
+            <Grid item className={classes.aidropDiv}>
               <FilledButton
                 className={classes.airdropButton}
                 name={'Airdrop'}
@@ -104,15 +77,21 @@ export const Header: React.FC<IProps> = ({
               }}
               startIcon={<LanguageIcon></LanguageIcon>}></FilledButton>
           </Grid>
+          <Grid
+            item
+            className={classes.logoAvatar}
+            onClick={() => {
+              if (!disableActions) {
+                setOpenAccounts(!openAccounts)
+              }
+            }}>
+            <CardMedia
+              style={{ width: 25, height: 25, marginTop: 5, marginLeft: 20 }}
+              image={AvatarIcon}
+            />
+          </Grid>
           <Grid item>
-            <IconButton
-              aria-label='delete'
-              className={classes.moreButton}
-              onClick={() => {
-                if (!disableActions) {
-                  setOpenMenu(!openMenu)
-                }
-              }}>
+            <IconButton aria-label='delete' className={classes.moreButton}>
               <MoreVertIcon />
             </IconButton>
           </Grid>
@@ -149,6 +128,91 @@ export const Header: React.FC<IProps> = ({
               </Grid>
             )
           })}
+        </Grid>
+      </Drawer>
+      <Drawer
+        anchor='bottom'
+        open={openAccounts}
+        onClose={() => {
+          setOpenAccounts(false)
+        }}
+        classes={{ paper: classes.drawer }}>
+        <Grid container className={classes.drawerRoot} direction='column'>
+          <Grid item>
+            <Typography variant='h2' className={classes.drawerTitle}>
+              Available networks
+            </Typography>
+          </Grid>
+          {accounts.map((account, index) => {
+            return (
+              <Grid
+                key={index}
+                item
+                className={classes.drawerEntry}
+                onClick={() => {
+                  onWalletChange(account.publicKey)
+                }}>
+                <ListEntry
+                  label={`Account #${index + 1} ${account.type === 'ledger' ? ' (Ledger)' : ''}`}
+                  text={account.publicKey}
+                  selected={account.selected}
+                />
+              </Grid>
+            )
+          })}
+          <Grid item className={classes.divider}>
+            <Divider></Divider>
+          </Grid>
+          <Grid item style={{ marginTop: 25 }}>
+            <Typography variant='h2' className={classes.drawerTitle}>
+              Manage Accounts
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Grid container direction='column' justify='center' alignItems='center'>
+              <Grid item>
+                <FilledButton
+                  className={classes.buttonAccounts}
+                  name='Create account'
+                  disabled
+                  variant='gray'
+                  onClick={() => {
+                    // if (!disableActions) {
+                    //   setOpen(true)
+                    // }
+                  }}
+                  startIcon={<AddIcon style={{ fontSize: 15 }}></AddIcon>}></FilledButton>
+              </Grid>
+              <Grid item style={{ marginTop: 16 }}>
+                <FilledButton
+                  className={classes.buttonAccounts}
+                  name='Import account'
+                  variant='gray'
+                  disabled
+                  onClick={() => {
+                    // if (!disableActions) {
+                    //   setOpen(true)
+                    // }
+                  }}
+                  startIcon={
+                    <ArrowDownwardIcon style={{ fontSize: 15 }}></ArrowDownwardIcon>
+                  }></FilledButton>
+              </Grid>
+              <Grid item style={{ marginTop: 16 }}>
+                <FilledButton
+                  className={classes.buttonAccounts}
+                  name='Connect ledger'
+                  variant='gray'
+                  disabled={existLedger}
+                  onClick={() => {
+                    if (!disableActions) {
+                      onNewLedgerAccount()
+                    }
+                  }}
+                  startIcon={<UsbIcon style={{ fontSize: 15 }}></UsbIcon>}></FilledButton>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
       </Drawer>
     </Grid>
