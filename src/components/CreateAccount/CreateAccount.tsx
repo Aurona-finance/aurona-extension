@@ -41,8 +41,8 @@ export const CreateAccount: React.FC<IProps> = ({ onClick }) => {
             <Grid container>
               <Grid item>
                 <Typography variant='body1' className={classes.label}>
-                  'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit
-                  officia consequat duis enim velit mollit. '
+                  These 24 words will allow you to restore your Aurona account. Keep them in safe
+                  location and don't share them with anyone.
                 </Typography>
               </Grid>
             </Grid>

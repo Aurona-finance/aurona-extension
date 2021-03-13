@@ -42,8 +42,8 @@ export const Enable: React.FC<IProps> = ({ website, onConfirm, onReject }) => {
       </Grid>
       <Grid item style={{ marginTop: 50, width: '100%' }}>
         <Typography variant='body2' className={classes.label}>
-          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia
-          consequat duis enim velit mollit. '
+          Website {website} wants to connect to your wallet. It will gain access to your public key
+          and will be able to send transaction requests.
         </Typography>
       </Grid>
       <Grid item style={{ marginTop: 50, width: '100%' }}>
