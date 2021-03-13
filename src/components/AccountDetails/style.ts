@@ -26,13 +26,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     textOverflow: 'ellipsis'
   },
   balance: {
-    fontSize: 28,
-    width: 170,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden !important',
-    textOverflow: 'ellipsis'
-  },
-  balanceTicker: {
     fontSize: 28
   },
   button: {
@@ -53,6 +46,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     // '&:hover': {
     //   background: 'none'
     // }
+  },
+  backButton: {
+    borderRadius: 10,
+    textTransform: 'none',
+    fontWeight: 'bold',
+    fontSize: '14px',
+    transition: 'all 500ms ease',
+    maxWidth: 115,
+    minWidth: 115,
+    height: 35,
+    color: colors.white.main
   }
 }))
 

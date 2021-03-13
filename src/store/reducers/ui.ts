@@ -7,7 +7,8 @@ import { PayloadType } from './types'
 export enum UI_POSITION {
   MAIN,
   CREATE_ACCOUNT,
-  SEND
+  SEND,
+  TOKEN_DETAILS
 }
 export interface Loader {
   open: boolean
@@ -23,12 +24,14 @@ export interface IUIStore {
   position: UI_POSITION
   loadingTokens: boolean
   sendToken: ISendToken
+  tokenDetails: PublicKey
 }
 
 export const defaultState: IUIStore = {
   loader: { open: false, message: '' },
   position: UI_POSITION.MAIN,
   loadingTokens: true,
+  tokenDetails: DEFAULT_PUBLICKEY,
   sendToken: { amount: new BN(0), recipient: DEFAULT_PUBLICKEY, tokenAddress: DEFAULT_PUBLICKEY }
 }
 export const uiSliceName = 'ui'
@@ -51,6 +54,11 @@ const uiSlice = createSlice({
     openSendToken(state, action: PayloadAction<PublicKey>) {
       state.position = UI_POSITION.SEND
       state.sendToken.tokenAddress = action.payload
+      return state
+    },
+    openTokenDetails(state, action: PayloadAction<PublicKey>) {
+      state.position = UI_POSITION.TOKEN_DETAILS
+      state.tokenDetails = action.payload
       return state
     },
     sendToken(state, action: PayloadAction<Omit<ISendToken, 'tokenAddress'>>) {

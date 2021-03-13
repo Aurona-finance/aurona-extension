@@ -140,7 +140,7 @@ export const Header: React.FC<IProps> = ({
         <Grid container className={classes.drawerRoot} direction='column'>
           <Grid item>
             <Typography variant='h2' className={classes.drawerTitle}>
-              Available networks
+              Choose account
             </Typography>
           </Grid>
           {accounts.map((account, index) => {

@@ -10,6 +10,7 @@ import AddAccountContainer from '@containers/AddAccount/AddAccount'
 import SendToken from '@containers/SendToken/SendToken'
 import { UI_POSITION } from '@reducers/ui'
 import { getStoredWallets } from '@static/utils'
+import AccountDetails from '@containers/AccountDetails/AccountDetails'
 
 export const Main: React.FC = () => {
   const classes = useStyles()
@@ -46,6 +47,12 @@ export const Main: React.FC = () => {
         return (
           <>
             <SendToken />
+          </>
+        )
+      case UI_POSITION.TOKEN_DETAILS:
+        return (
+          <>
+            <AccountDetails />
           </>
         )
       default:

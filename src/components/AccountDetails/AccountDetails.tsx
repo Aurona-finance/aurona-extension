@@ -9,11 +9,20 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 interface IProps {
   address: string
+  tokenAddress: string
   balance: string
-  balanceUsd?: string
   onSend: () => void
+  onBack: () => void
+  ticker?: string
 }
-export const Main: React.FC<IProps> = ({ balance, balanceUsd, address, onSend }) => {
+export const AccountDetails: React.FC<IProps> = ({
+  balance,
+  address,
+  onSend,
+  tokenAddress,
+  onBack,
+  ticker
+}) => {
   const classes = useStyles()
   return (
     <Grid
@@ -22,45 +31,43 @@ export const Main: React.FC<IProps> = ({ balance, balanceUsd, address, onSend })
       // alignItems='center'
       // justify='space-between'
       className={classes.root}>
-      <Grid item>
+      <Grid item style={{ marginTop: 20 }}>
         <Typography variant='body2' className={classes.title}>
           Your Account
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant='body1' className={classes.address}>
+        <Typography variant='body2' className={classes.address}>
           {address}
         </Typography>
       </Grid>
-      <Divider />
-      <Grid item style={{ marginTop: 12 }}>
+      <Grid item style={{ marginTop: 10 }}>
+        <Divider />
+      </Grid>
+      <Grid item style={{ marginTop: 30 }}>
         <Grid container>
           <Grid item>
-            <Grid container wrap='nowrap'>
-              <Grid item xs>
-                <Typography variant='h1' className={classes.balance}>
-                  {`${balance}`}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant='h1' className={classes.balanceTicker}>
-                  SOL
-                </Typography>
-              </Grid>
-            </Grid>
+            <Typography variant='h1' className={classes.balance}>{`${balance}`}</Typography>
           </Grid>
           <Grid item>
             <CardMedia style={{ width: 32, height: 32, marginLeft: 20 }} image={eth} />
           </Grid>
         </Grid>
       </Grid>
-      <Grid item style={{ marginTop: 4 }}>
-        <Typography variant='body1' className={classes.usdBalance}>{`${
-          balanceUsd || '---'
-        } USD`}</Typography>
+      <Grid item style={{ marginTop: 20 }}>
+        <Typography variant='body2' className={classes.title}>
+          Token address
+        </Typography>
       </Grid>
-      <Divider />
-      <Grid item style={{ marginTop: 28, width: '100%' }}>
+      <Grid item>
+        <Typography variant='body2' className={classes.address}>
+          {tokenAddress}
+        </Typography>
+      </Grid>
+      <Grid item style={{ marginTop: 10 }}>
+        <Divider />
+      </Grid>
+      <Grid item style={{ marginTop: 30, width: '100%' }}>
         <Grid container justify='space-between' direction='row'>
           <Grid item>
             <FilledButton
@@ -96,7 +103,20 @@ export const Main: React.FC<IProps> = ({ balance, balanceUsd, address, onSend })
           </Grid>
         </Grid>
       </Grid>
+      <Grid item style={{ marginTop: 100 }}>
+        <Grid container justify='center'>
+          <Grid item>
+            <FilledButton
+              className={classes.backButton}
+              name='Go back'
+              variant='color'
+              onClick={() => {
+                onBack()
+              }}></FilledButton>
+          </Grid>
+        </Grid>
+      </Grid>
     </Grid>
   )
 }
-export default Main
+export default AccountDetails

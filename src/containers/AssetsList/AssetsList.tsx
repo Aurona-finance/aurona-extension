@@ -13,7 +13,7 @@ export const AssetsList: React.FC = () => {
   return (
     <AssetsListComponent
       onTokenClick={tokenAddress => {
-        dispatch(actions.openSendToken(tokenAddress))
+        dispatch(actions.openTokenDetails(tokenAddress))
       }}
       tokens={tokens}
       loading={loading}

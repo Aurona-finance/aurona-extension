@@ -3,11 +3,12 @@ import { keySelectors, AnyProps } from './helpers'
 
 const store = (s: AnyProps) => s[uiSliceName] as IUIStore
 
-export const { loader, position, loadingTokens, sendToken } = keySelectors(store, [
+export const { loader, position, loadingTokens, sendToken, tokenDetails } = keySelectors(store, [
   'loader',
   'position',
   'loadingTokens',
-  'sendToken'
+  'sendToken',
+  'tokenDetails'
 ])
 
 export const navigationSelectors = { loader, position, loadingTokens, sendToken }
