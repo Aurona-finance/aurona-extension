@@ -7,6 +7,7 @@ import FilledButton from '@components/FilledButton/FilledButton'
 import SendIcon from '@material-ui/icons/Send'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
+import CopyToolTip from '@components/CopyToolTip/CopyToolTip'
 interface IProps {
   address: string
   tokenAddress: string
@@ -37,9 +38,11 @@ export const AccountDetails: React.FC<IProps> = ({
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant='body2' className={classes.address}>
-          {address}
-        </Typography>
+        <CopyToolTip text={address}>
+          <Typography variant='body2' className={classes.address}>
+            {address}
+          </Typography>
+        </CopyToolTip>
       </Grid>
       <Grid item style={{ marginTop: 10 }}>
         <Divider />
@@ -60,9 +63,11 @@ export const AccountDetails: React.FC<IProps> = ({
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant='body2' className={classes.address}>
-          {tokenAddress}
-        </Typography>
+        <CopyToolTip text={tokenAddress}>
+          <Typography variant='body2' className={classes.address}>
+            {tokenAddress}
+          </Typography>
+        </CopyToolTip>
       </Grid>
       <Grid item style={{ marginTop: 10 }}>
         <Divider />

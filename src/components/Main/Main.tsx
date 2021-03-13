@@ -1,12 +1,14 @@
 import React from 'react'
 import { Grid, Typography, IconButton, CardMedia } from '@material-ui/core'
-import useStyles from './style'
 import eth from '@static/icons/eth.png'
 import Divider from '@components/Divider/Divider'
 import FilledButton from '@components/FilledButton/FilledButton'
 import SendIcon from '@material-ui/icons/Send'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
+import CopyToolTip from '@components/CopyToolTip/CopyToolTip'
+import useStyles from './style'
+
 interface IProps {
   address: string
   balance: string
@@ -28,9 +30,11 @@ export const Main: React.FC<IProps> = ({ balance, balanceUsd, address, onSend })
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant='body1' className={classes.address}>
-          {address}
-        </Typography>
+        <CopyToolTip text={address}>
+          <Typography variant='body1' className={classes.address}>
+            {address}
+          </Typography>
+        </CopyToolTip>
       </Grid>
       <Divider />
       <Grid item style={{ marginTop: 12 }}>
