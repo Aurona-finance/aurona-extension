@@ -2,7 +2,7 @@
   "name": "Aurona",
   "description": "Solana wallet and extension allowing dapp communication with your wallet.",
   "manifest_version": 2,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "icons": {
     "128": "icon128.png"
   },
