@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/indent */
 import {
   TransactionInstruction,
@@ -10,6 +11,7 @@ import BN from 'bn.js'
 import { TOKEN_PROGRAM_ID, Token } from '@solana/spl-token'
 import { getCurrentSolanaConnection, getSolanaConnection } from '@web3/solana/connection'
 import { printBN } from './utils'
+import { TokenInfo } from '@solana/spl-token-registry'
 
 export type TokenInstructionLayoutType =
   | {
@@ -63,7 +65,8 @@ export interface IDecodedTransaction {
   amount: BN
 }
 export const decodeTransaction = async (
-  instruction: TransactionInstruction
+  instruction: TransactionInstruction,
+  tokensData: TokenInfo[]
 ): Promise<IDecodedTransaction> => {
   // SystemProgram
   try {
@@ -147,7 +150,7 @@ export const decodeTransaction = async (
       }
     }
     if (instruction.programId.equals(TOKEN_PROGRAM_ID)) {
-      const operation = await decodeTokenInstruction(instruction)
+      const operation = await decodeTokenInstruction(instruction, tokensData)
       return operation
     }
   } catch (error) {
@@ -156,12 +159,20 @@ export const decodeTransaction = async (
   return { amount: new BN(0), operation: 'Unknown', text: 'Unknown Operation' }
 }
 
-export const decodeTokenInstruction = async (
-  instruction: TransactionInstruction
-): Promise<IDecodedTransaction> => {
+const getTokenInfo = async (tokenAccount: PublicKey, tokensData: TokenInfo[]) => {
   const connection = await getSolanaConnection()
-  const tokenAddress = await connection.getTokenAccountBalance(instruction.keys[1].pubkey)
-  const decimals = tokenAddress.value.decimals
+  const tokenData = await connection.getTokenAccountBalance(tokenAccount)
+  const info = await connection.getParsedAccountInfo(tokenAccount)
+  // @ts-expect-error
+  const mintAddress: string = info.value.data.parsed.info.mint
+  const tokenInfo = tokensData.find(t => t.address === mintAddress)
+  const decimals = tokenData.value.decimals
+  return { decimals: decimals, symbol: tokenInfo?.symbol }
+}
+export const decodeTokenInstruction = async (
+  instruction: TransactionInstruction,
+  tokensData: TokenInfo[]
+): Promise<IDecodedTransaction> => {
   const data = TokenInstructionLayout.decode(Buffer.from(instruction.data))
   if ('initializeMint' in data) {
     const type = 'initializeMint'
@@ -171,23 +182,24 @@ export const decodeTokenInstruction = async (
     return { operation: type, amount: new BN(0), text: 'Create token account' }
   } else if ('transfer' in data) {
     const type = 'transfer'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
     return {
       operation: type,
       amount: data.transfer.amount,
-      text: `Send ${printBN(
-        data.transfer.amount,
-        decimals
-      )} to ${instruction.keys[1].pubkey.toString()}`
+      text: `Send ${printBN(data.transfer.amount, tokenInfo.decimals)} ${
+        tokenInfo.symbol
+      } to ${instruction.keys[1].pubkey.toString()}`
     }
   } else if ('approve' in data) {
     const type = 'approve'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
+
     return {
       operation: type,
       amount: data.approve.amount,
-      text: `Approve ${printBN(
-        data.approve.amount,
-        decimals
-      )} to ${instruction.keys[1].pubkey.toString()}`
+      text: `Approve ${printBN(data.approve.amount, tokenInfo.decimals)} ${
+        tokenInfo.symbol
+      } to ${instruction.keys[1].pubkey.toString()}`
     }
   } else if ('revoke' in data) {
     const type = 'revoke'
@@ -206,20 +218,26 @@ export const decodeTokenInstruction = async (
     }
   } else if ('mintTo' in data) {
     const type = 'mintTo'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
+
     return {
       operation: type,
       amount: data.mintTo.amount,
-      text: `Mint ${printBN(
-        data.mintTo.amount,
-        decimals
-      )} to ${instruction.keys[1].pubkey.toString()}`
+      text: `Mint ${printBN(data.mintTo.amount, tokenInfo.decimals)} ${
+        tokenInfo.symbol
+      } to ${instruction.keys[1].pubkey.toString()}`
     }
   } else if ('burn' in data) {
     const type = 'burn'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
+
     return {
       operation: type,
       amount: data.burn.amount,
-      text: `Burn ${printBN(data.burn.amount, decimals)} ${instruction.keys[1].pubkey.toString()}`
+      text: `Burn ${printBN(
+        data.burn.amount,
+        tokenInfo.decimals
+      )} ${instruction.keys[1].pubkey.toString()}`
     }
   } else if ('closeAccount' in data) {
     const type = 'closeAccount'
@@ -230,43 +248,48 @@ export const decodeTokenInstruction = async (
     }
   } else if ('transferChecked' in data) {
     const type = 'transfer'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
+
     return {
       operation: type,
       amount: data.transferChecked.amount,
-      text: `Send ${printBN(
-        data.transferChecked.amount,
-        decimals
-      )} to ${instruction.keys[2].pubkey.toString()}`
+      text: `Send ${printBN(data.transferChecked.amount, tokenInfo.decimals)} ${
+        tokenInfo.symbol
+      } to ${instruction.keys[2].pubkey.toString()}`
     }
   } else if ('approveChecked' in data) {
     const type = 'approve'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
+
     return {
       operation: type,
       amount: data.approveChecked.amount,
-      text: `Approve ${printBN(
-        data.approveChecked.amount,
-        decimals
-      )} to ${instruction.keys[2].pubkey.toString()}`
+      text: `Approve ${printBN(data.approveChecked.amount, tokenInfo.decimals)} ${
+        tokenInfo.symbol
+      } to ${instruction.keys[2].pubkey.toString()}`
     }
   } else if ('mintToChecked' in data) {
     const type = 'mintTo'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
+
     return {
       operation: type,
       amount: data.mintToChecked.amount,
       text: `Mint ${printBN(
         data.mintToChecked.amount,
-        decimals
+        tokenInfo.decimals
       )} to ${instruction.keys[1].pubkey.toString()}`
     }
   } else if ('burnChecked' in data) {
     const type = 'burn'
+    const tokenInfo = await getTokenInfo(instruction.keys[1].pubkey, tokensData)
+
     return {
       operation: type,
       amount: data.burnChecked.amount,
-      text: `Burn ${printBN(
-        data.burnChecked.amount,
-        decimals
-      )} ${instruction.keys[1].pubkey.toString()}`
+      text: `Burn ${printBN(data.burnChecked.amount, tokenInfo.decimals)} ${
+        tokenInfo.symbol
+      } ${instruction.keys[1].pubkey.toString()}`
     }
   } else {
     return { amount: new BN(0), operation: 'Unknown', text: 'Unknown Operation' }

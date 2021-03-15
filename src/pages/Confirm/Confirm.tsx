@@ -13,6 +13,7 @@ import { LedgerWalletProvider } from '@web3/hardware/walletProvider/ledger'
 import { retrieveCurrentAccount } from '@static/utils'
 import { actions } from '@reducers/snackbars'
 import { actions as uiActions } from '@reducers/ui'
+import { networkTokens } from '@selectors/tokenInfo'
 
 interface IEnable {
   data: IData
@@ -21,6 +22,7 @@ interface IEnable {
 export const Confirm: React.FC<IEnable> = ({ data }) => {
   const classes = useStyles()
   const currentNetwork = useSelector(network)
+  const tokensData = useSelector(networkTokens)
   const dispatch = useDispatch()
   const [instructions, setInstructions] = useState<IDecodedTransaction[]>([])
   // console.log(Transaction.from(JSON.parse(data.data.transaction).data))
@@ -30,7 +32,7 @@ export const Confirm: React.FC<IEnable> = ({ data }) => {
         const tx = Transaction.from(JSON.parse(data.data.transaction).data).instructions
         const decoded = await Promise.all(
           tx.map(ix => {
-            return decodeTransaction(ix)
+            return decodeTransaction(ix, tokensData)
           })
         )
         setInstructions(decoded)
@@ -43,7 +45,7 @@ export const Confirm: React.FC<IEnable> = ({ data }) => {
         }, [] as TransactionInstruction[])
         const decoded = await Promise.all(
           ixs.map(ix => {
-            return decodeTransaction(ix)
+            return decodeTransaction(ix, tokensData)
           })
         )
         setInstructions(decoded)
