@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import BN from 'bn.js'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import { DEFAULT_PUBLICKEY } from '@static/index'
+import SOL_ICON from '@static/icons/sol.png'
 import * as R from 'remeda'
 import { ISolanaWallet, ITokenAccount, solanaWalletSliceName } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
+import { IAssetAccount } from '@components/AssetsList/AssetsList'
+import { networkTokens } from './tokenInfo'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -50,10 +54,9 @@ export const accountsWithSol = createSelector(
   accounts,
   balance,
   address,
-  (tokensAccounts, solBalance, solAddress): ITokenAccount[] => {
-    const accs = Object.values(tokensAccounts).reduce((acc, accounts) => {
-      return acc.concat(accounts)
-    }, [] as ITokenAccount[])
+  networkTokens,
+  (tokensAccounts, solBalance, solAddress, tokensData): IAssetAccount[] => {
+    let accs: IAssetAccount[] = []
     if (!solAddress) {
       return accs
     }
@@ -62,26 +65,35 @@ export const accountsWithSol = createSelector(
       balance: solBalance,
       decimals: 9,
       programId: DEFAULT_PUBLICKEY,
-      ticker: 'SOL'
+      iconURI: SOL_ICON,
+      symbol: 'SOL'
     })
+    for (const accounts of Object.values(tokensAccounts)) {
+      const token = tokensData.find(t => t.address === accounts[0].programId.toString())
+      const userAccounts = accounts.map(a => {
+        return { ...a, symbol: token?.symbol, iconURI: token?.logoURI } as IAssetAccount
+      })
+      accs = accs.concat(userAccounts)
+    }
+
     return accs
   }
 )
 
 export const tokenAccount = (tokenAddress: PublicKey) =>
-  createSelector(accounts, address, balance, (tokensAccounts, solAddress, solBalance) => {
-    if (tokensAccounts[tokenAddress.toString()]) {
-      return tokensAccounts[tokenAddress.toString()][0]
-    } else {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  createSelector(accountsWithSol, balance, address, (allAccounts, solBalance, solAddress) => {
+    const tokenAccount = allAccounts.find(t => t.programId.equals(tokenAddress))
+    if (!tokenAccount) {
       return {
         programId: DEFAULT_PUBLICKEY,
         address: new PublicKey(solAddress),
         balance: solBalance,
         decimals: 9,
-        ticker: 'SOL'
-      } as ITokenAccount
+        iconURI: SOL_ICON,
+        symbol: 'SOL'
+      } as IAssetAccount
     }
+    return tokenAccount
   })
 
 export const solanaWalletSelectors = {

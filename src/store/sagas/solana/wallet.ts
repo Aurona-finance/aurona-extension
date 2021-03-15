@@ -10,7 +10,7 @@ import {
   takeLatest
 } from 'typed-redux-saga'
 
-import { actions, PayloadTypes } from '@reducers/solanaWallet'
+import { actions, PayloadTypes, Status } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
 import { getSolanaWallet } from '@web3/solana/wallet'
 import {
@@ -25,10 +25,9 @@ import { actions as uiActions, UI_POSITION } from '@reducers/ui'
 
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
-import { Status } from '@reducers/solanaConnection'
 // import { createToken } from './token'
 import BN from 'bn.js'
-import { ACTION_TYPE, TOKEN_PROGRAM_ID } from '@static/index'
+import { ACTION_TYPE, DEFAULT_PUBLICKEY, TOKEN_PROGRAM_ID } from '@static/index'
 import {
   retrieveCurrentAccount,
   sleep,
@@ -36,7 +35,7 @@ import {
   UnlockedAccount,
   UnlockedLedger
 } from '@static/utils'
-import { address } from '@selectors/solanaWallet'
+import { address, tokenAccount } from '@selectors/solanaWallet'
 import { buildTransaction, createAccountInstruction } from './instructions'
 import { LedgerWalletProvider } from '@web3/hardware/walletProvider/ledger'
 
@@ -75,7 +74,6 @@ export function* fetchTokensAccounts(): Generator {
   )
   for (const account of tokensAccounts.value) {
     const info: IparsedTokenInfo = account.account.data.parsed.info
-    console.log(account.pubkey.toString())
     yield* put(
       actions.addTokenAccount({
         programId: new PublicKey(info.mint),
@@ -198,6 +196,23 @@ export function* handleCreateAccount(
         message: ''
       })
     )
+    const account = yield* select(tokenAccount(action.payload))
+    if (!account.programId.equals(DEFAULT_PUBLICKEY)) {
+      yield* put(
+        uiActions.setLoader({
+          open: false,
+          message: ''
+        })
+      )
+      yield* put(
+        snackbarsActions.add({
+          message: 'Account already exist',
+          variant: 'info',
+          persist: false
+        })
+      )
+      return
+    }
     yield* call(createAccount, action.payload)
     yield* put(uiActions.setUiPosition(UI_POSITION.MAIN))
     yield* put(

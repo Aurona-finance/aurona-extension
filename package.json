@@ -85,6 +85,7 @@
     "@project-serum/serum": "^0.13.25",
     "@reduxjs/toolkit": "^1.5.0",
     "@solana/spl-token": "^0.1.1",
+    "@solana/spl-token-registry": "^0.2.1",
     "@solana/web3.js": "^0.93.0",
     "bip32": "^2.0.6",
     "bip39": "^3.0.3",

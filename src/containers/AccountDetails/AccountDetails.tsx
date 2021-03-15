@@ -16,7 +16,8 @@ export const AccountDetails: React.FC = () => {
       balance={printBN(token.balance, token.decimals)}
       tokenAddress={token.programId.toString()}
       address={token.address.toString()}
-      ticker={token.ticker}
+      ticker={token.symbol}
+      iconURI={token.iconURI}
       onBack={() => {
         dispatch(actions.setUiPosition(UI_POSITION.MAIN))
       }}

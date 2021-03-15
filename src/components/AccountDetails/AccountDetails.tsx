@@ -8,6 +8,7 @@ import SendIcon from '@material-ui/icons/Send'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import CopyToolTip from '@components/CopyToolTip/CopyToolTip'
+import TokenLogo from '@components/TokenLogo/TokenLogo'
 interface IProps {
   address: string
   tokenAddress: string
@@ -15,6 +16,7 @@ interface IProps {
   onSend: () => void
   onBack: () => void
   ticker?: string
+  iconURI?: string
 }
 export const AccountDetails: React.FC<IProps> = ({
   balance,
@@ -22,7 +24,8 @@ export const AccountDetails: React.FC<IProps> = ({
   onSend,
   tokenAddress,
   onBack,
-  ticker
+  ticker,
+  iconURI
 }) => {
   const classes = useStyles()
   return (
@@ -52,8 +55,8 @@ export const AccountDetails: React.FC<IProps> = ({
           <Grid item>
             <Typography variant='h1' className={classes.balance}>{`${balance}`}</Typography>
           </Grid>
-          <Grid item>
-            <CardMedia style={{ width: 32, height: 32, marginLeft: 20 }} image={eth} />
+          <Grid item style={{ marginLeft: 10 }}>
+            <TokenLogo url={iconURI} />
           </Grid>
         </Grid>
       </Grid>
@@ -69,6 +72,22 @@ export const AccountDetails: React.FC<IProps> = ({
           </Typography>
         </CopyToolTip>
       </Grid>
+      {ticker && (
+        <>
+          <Grid item style={{ marginTop: 10 }}>
+            <Typography variant='body2' className={classes.title}>
+              Token symbol
+            </Typography>
+          </Grid>
+          <Grid item>
+            <CopyToolTip text={ticker}>
+              <Typography variant='body2' className={classes.address}>
+                {ticker}
+              </Typography>
+            </CopyToolTip>
+          </Grid>
+        </>
+      )}
       <Grid item style={{ marginTop: 10 }}>
         <Divider />
       </Grid>
@@ -108,7 +127,7 @@ export const AccountDetails: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item style={{ marginTop: 100 }}>
+      <Grid item style={{ marginTop: 70 }}>
         <Grid container justify='center'>
           <Grid item>
             <FilledButton

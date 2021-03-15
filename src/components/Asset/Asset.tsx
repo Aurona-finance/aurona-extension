@@ -3,6 +3,7 @@ import { Grid, Typography, IconButton, CardMedia } from '@material-ui/core'
 import useStyles from './style'
 import eth from '@static/icons/eth.png'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
+import TokenLogo from '@components/TokenLogo/TokenLogo'
 interface IProps {
   name: string
   balance: string
@@ -21,8 +22,8 @@ export const Asset: React.FC<IProps> = ({ balance, balanceUsd, onClick, name, ic
       className={classes.root}>
       <Grid item>
         <Grid container>
-          <Grid item>
-            <CardMedia style={{ width: 32, height: 32, marginRight: 15 }} image={iconPath || eth} />
+          <Grid item style={{ marginRight: 15 }}>
+            <TokenLogo url={iconPath} />
           </Grid>
           <Grid item>
             <Grid container direction='column'>

@@ -1,12 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { SolanaNetworks } from '@static/index'
+import { Status } from './solanaWallet'
 import { PayloadType } from './types'
-export enum Status {
-  Uninitialized = 'uninitialized',
-  Init = 'init',
-  Error = 'error',
-  Initalized = 'initalized'
-}
 export interface ISolanaConnectionStore {
   status: Status
   message: string

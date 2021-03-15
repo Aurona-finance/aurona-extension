@@ -15,7 +15,6 @@ export interface ITokenAccount {
   balance: BN
   address: PublicKey
   decimals: number
-  ticker?: string
 }
 export interface ITransaction {
   recipient: string

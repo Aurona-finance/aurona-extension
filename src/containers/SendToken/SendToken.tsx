@@ -14,7 +14,7 @@ export const SendToken: React.FC = () => {
     <Send
       balance={token.balance}
       tokenAddress={token.programId}
-      ticker={token.ticker}
+      ticker={token.symbol}
       decimals={token.decimals}
       onCancel={() => {
         dispatch(actions.setUiPosition(UI_POSITION.MAIN))

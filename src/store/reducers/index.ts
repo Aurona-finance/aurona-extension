@@ -6,8 +6,13 @@ import { reducer as snackbarsReducer, snackbarsSliceName } from './snackbars'
 import { reducer as solanaWalletReducer, solanaWalletSliceName } from './solanaWallet'
 import { reducer as solanaConnectionReducer, solanaConnectionSliceName } from './solanaConnection'
 import { reducer as uiReducer, uiSliceName } from './ui'
+import { reducer as tokenInfoReducer, tokenInfoSliceName } from './tokenInfo'
 const authPersistConfig = {
   key: 'localStorage',
+  storage: localStorage
+}
+const tokenInfoPersistConfig = {
+  key: 'tokenInfo',
   storage: localStorage
 }
 const uiPersist = {
@@ -24,6 +29,7 @@ const combinedReducers = combineReducers({
   [snackbarsSliceName]: snackbarsReducer,
   [uiSliceName]: uiReducer,
   [solanaConnectionSliceName]: persistReducer(persistSolanaNetwork, solanaConnectionReducer),
+  [tokenInfoSliceName]: persistReducer(tokenInfoPersistConfig, tokenInfoReducer),
   [solanaWalletSliceName]: solanaWalletReducer
 })
 export default combinedReducers

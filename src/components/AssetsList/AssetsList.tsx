@@ -9,9 +9,9 @@ import Asset from '@components/Asset/Asset'
 import { ITokenAccount } from '@reducers/solanaWallet'
 import { printBN } from '@static/utils'
 import Loader from '@static/gif/loader.gif'
-
+export type IAssetAccount = ITokenAccount & { iconURI?: string; symbol?: string }
 interface IProps {
-  tokens?: ITokenAccount[]
+  tokens?: IAssetAccount[]
   onAddAccount: () => void
   onTokenClick: (address: PublicKey) => void
   loading?: boolean
@@ -52,8 +52,9 @@ export const AssetsList: React.FC<IProps> = ({
           <span key={tokenAccount.programId.toString()}>
             <Grid item>
               <Asset
+                iconPath={tokenAccount.iconURI}
                 balance={printBN(tokenAccount.balance, tokenAccount.decimals)}
-                name={tokenAccount.ticker || tokenAccount.programId.toString()}
+                name={tokenAccount.symbol || tokenAccount.programId.toString()}
                 onClick={() => {
                   onTokenClick(tokenAccount.programId)
                 }}

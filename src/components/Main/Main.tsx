@@ -1,12 +1,13 @@
 import React from 'react'
-import { Grid, Typography, IconButton, CardMedia } from '@material-ui/core'
-import eth from '@static/icons/eth.png'
+import { Grid, Typography } from '@material-ui/core'
 import Divider from '@components/Divider/Divider'
 import FilledButton from '@components/FilledButton/FilledButton'
 import SendIcon from '@material-ui/icons/Send'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import CopyToolTip from '@components/CopyToolTip/CopyToolTip'
+import SOL_ICON from '@static/icons/sol.png'
+import TokenLogo from '@components/TokenLogo/TokenLogo'
 import useStyles from './style'
 
 interface IProps {
@@ -53,8 +54,8 @@ export const Main: React.FC<IProps> = ({ balance, balanceUsd, address, onSend })
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
-            <CardMedia style={{ width: 32, height: 32, marginLeft: 20 }} image={eth} />
+          <Grid item style={{ marginLeft: 15 }}>
+            <TokenLogo url={SOL_ICON} />
           </Grid>
         </Grid>
       </Grid>
