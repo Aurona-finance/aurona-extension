@@ -120,7 +120,6 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
     owner: wallet.publicKey,
     programId: TOKEN_PROGRAM_ID
   })
-  console.log(account.publicKey)
   if (wallet.type === 'aurona') {
     const tx = yield* call(buildTransaction, {
       signers: [wallet.account.publicKey, account.publicKey],
@@ -150,7 +149,6 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
     yield* call([hw, hw.signTransaction], tx)
     tx.partialSign(account)
     const signature = yield* call(sendAndConfirmRawTransaction, connection, tx.serialize())
-    console.log(signature)
     yield* put(
       actions.addTokenAccount({
         programId: tokenAddress,

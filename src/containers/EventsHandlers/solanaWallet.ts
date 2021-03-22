@@ -24,8 +24,6 @@ const SolanaWalletEvents = () => {
       new PublicKey(publicKey),
       (accountInfo: AccountInfo<Buffer>) => {
         dispatch(actions.setBalance(new BN(accountInfo.lamports)))
-        console.log(accountInfo)
-        // console.log(accountInfo)
       }
     )
     return () => {

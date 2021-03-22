@@ -104,7 +104,6 @@ export const retrieveCurrentAccount = async (): Promise<UnlockedAccount | Unlock
   }
   const password = await retrieveHotPassword()
   const sk = decrypt(data.privkey, password)
-  // console.log(sk)
   if (data.type === 'aurona') {
     return {
       type: data.type,

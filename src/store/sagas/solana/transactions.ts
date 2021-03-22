@@ -57,7 +57,6 @@ export function* handleSendToken(): Generator {
         })
         tx.partialSign(wallet.account)
         const signature = yield* call(sendAndConfirmRawTransaction, connection, tx.serialize())
-        console.log(signature)
       }
       if (wallet.type === 'ledger') {
         const tx = yield* call(buildTransaction, {
@@ -68,7 +67,6 @@ export function* handleSendToken(): Generator {
         yield* call([hw, hw.init])
         yield* call([hw, hw.signTransaction], tx)
         const signature = yield* call(sendAndConfirmRawTransaction, connection, tx.serialize())
-        console.log(signature)
       }
     } else {
       // Send token
@@ -86,7 +84,6 @@ export function* handleSendToken(): Generator {
         })
         tx.partialSign(wallet.account)
         const signature = yield* call(sendAndConfirmRawTransaction, connection, tx.serialize())
-        console.log(signature)
       }
       if (wallet.type === 'ledger') {
         const tx = yield* call(buildTransaction, {
@@ -97,7 +94,6 @@ export function* handleSendToken(): Generator {
         yield* call([hw, hw.init])
         yield* call([hw, hw.signTransaction], tx)
         const signature = yield* call(sendAndConfirmRawTransaction, connection, tx.serialize())
-        console.log(signature)
       }
     }
   } catch (error) {

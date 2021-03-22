@@ -21,7 +21,6 @@ export const Enable: React.FC<IEnable> = ({ data }) => {
   const dispatch = useDispatch()
   const userAddress = useSelector(address)
   const currentNetwork = useSelector(network)
-  console.log(data)
   // Hook auto enable
   // React.useEffect(() => {
   //   if (data.type === ACTION_TYPE.ENABLE && !!userAddress) {

@@ -17,7 +17,6 @@ const getSolanaWallet = async (): Promise<Account> => {
 }
 export const getHotAccount = async (): Promise<Account> => {
   const current = await retrieveCurrentAccount()
-  console.log(current)
   if (current.type === 'ledger') {
     throw Error('Current wallet is hardware')
   }

@@ -18,8 +18,6 @@ export const createAccountInstruction = async ({
 }: IcreateAccountInstruction) => {
   const connection = await getSolanaConnection()
   const balanceNeeded = await Token.getMinBalanceRentForExemptAccount(connection)
-  console.log(balanceNeeded)
-  console.log(AccountLayout.span)
 
   const tx = new Transaction()
   tx.add(

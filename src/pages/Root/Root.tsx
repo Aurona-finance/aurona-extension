@@ -41,7 +41,6 @@ export const Root: React.FC = () => {
 
     chrome.storage.local.get(STORAGE_KEYS.CONNECT, function (d) {
       const _data = d[STORAGE_KEYS.CONNECT]
-      console.log(_data)
       if (_data === null || _data === undefined) {
         setIsHardware(false)
       } else {

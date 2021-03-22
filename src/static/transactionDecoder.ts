@@ -109,7 +109,6 @@ export const decodeTransaction = async (
             text: `Assign ${decoded.accountPubkey.toString()}`
           }
         case 'Transfer':
-          console.log(instruction.data)
           decoded = SystemInstruction.decodeTransfer(instruction)
           return {
             amount: new BN(decoded.lamports),

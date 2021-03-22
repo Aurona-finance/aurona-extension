@@ -30,11 +30,7 @@
   ],
   "permissions": [
     "storage",
-    "activeTab",
-    "webRequest",
-    "notifications",
     "clipboardWrite",
-    "tabs",
     "*://developer.mozilla.org/"
   ],
   "web_accessible_resources": [

@@ -22,7 +22,6 @@ export const Main: React.FC = () => {
   React.useEffect(() => {
     const getAllWallets = async () => {
       const storedAddresses = await getStoredWallets()
-      console.log(storedAddresses)
       dispatch(walletActions.setWallets(Object.values(storedAddresses)))
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

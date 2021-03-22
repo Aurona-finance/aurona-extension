@@ -9,8 +9,7 @@ export const Unlock: React.FC = () => {
     <UnlockComponent
       onClick={async password => {
         await storeHotPassword(password)
-        const unlockedWallet = await retrieveColdCurrentAccount(password)
-        console.log(unlockedWallet)
+        await retrieveColdCurrentAccount(password)
         dispatch(actions.setStatus(Status.Initalized))
       }}
     />
